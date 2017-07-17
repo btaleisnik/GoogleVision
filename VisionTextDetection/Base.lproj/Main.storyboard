@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="L7z-I6-GXy" userLabel="Label Results">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="L7z-I6-GXy" userLabel="Price Results">
                                 <rect key="frame" x="0.0" y="64" width="375" height="115"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -31,7 +31,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mOp-TU-dBI" userLabel="Face Results">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mOp-TU-dBI" userLabel="Item Results">
                                 <rect key="frame" x="0.0" y="187" width="375" height="138"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -72,9 +72,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Scan Image" id="ACB-Ok-C0j"/>
                     <connections>
-                        <outlet property="faceResults" destination="mOp-TU-dBI" id="iUO-jb-3OK"/>
                         <outlet property="imageView" destination="CJy-mX-kgx" id="aXG-c1-jP1"/>
-                        <outlet property="labelResults" destination="L7z-I6-GXy" id="mMs-Xr-l12"/>
+                        <outlet property="itemTextView" destination="mOp-TU-dBI" id="REZ-Qh-vsm"/>
+                        <outlet property="priceTextView" destination="L7z-I6-GXy" id="aq3-XQ-N4p"/>
                         <outlet property="spinner" destination="lKl-ak-QUJ" id="BJk-eQ-bZ0"/>
                     </connections>
                 </viewController>

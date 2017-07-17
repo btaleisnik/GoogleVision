@@ -70,8 +70,9 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet weak var labelResults: UITextView!
-    @IBOutlet weak var faceResults: UITextView!
+    @IBOutlet weak var priceTextView: UITextView!
+    @IBOutlet weak var itemTextView: UITextView!
+
     
     var googleAPIKey = "AIzaSyD78xYTGtVFxFaHcHgthQNGTuF_vB6lHsw"
     var googleURL: URL {
@@ -89,8 +90,8 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         imagePicker.delegate = self
-        labelResults.isHidden = true
-        faceResults.isHidden = true
+        priceTextView.isHidden = true
+        itemTextView.isHidden = true
         spinner.hidesWhenStopped = true
     }
     
@@ -117,13 +118,13 @@ extension ImagePickerViewController {
             
             self.spinner.stopAnimating()
             //self.imageView.isHidden = true
-            self.labelResults.isHidden = false
-            self.faceResults.isHidden = false
-            self.faceResults.text = ""
+            self.priceTextView.isHidden = false
+            self.itemTextView.isHidden = false
+            self.itemTextView.text = ""
             
             // Check for errors
             if (errorObj.dictionaryValue != [:]) {
-                self.labelResults.text = "Error code \(errorObj["code"]): \(errorObj["message"])"
+                self.priceTextView.text = "Error code \(errorObj["code"]): \(errorObj["message"])"
             } else {
                 // Parse the response
                 var responses: JSON = json["responses"][0]["textAnnotations"][0]["description"]
@@ -166,20 +167,45 @@ extension ImagePickerViewController {
                 
                 //find total (assume it's the max() double on receipt, then remove all occurences
                 let total = prices.max()
-
                 prices = prices.filter{$0 != total}
                 
                 //sum up all items and verify itemSum == Total
-                let itemSum = prices.reduce(0,+)
+                var itemSum = prices.reduce(0,+)
+                
+                //attempt to remove subtotal; look for a number greater than 90% of total price - likely the  pre-tax subtotal
+                var subtotal: Double?
+                var tax: Double?
+                if itemSum != total {
+                    for price in prices {
+                        if (price > (total!*0.9)) {
+                            subtotal = price
+                            tax = total! - subtotal!
+                            prices = prices.filter{$0 != price}
+                            itemSum = prices.reduce(0, +)
+                        }
+                    }
+                }
+                
+                
+                
+                print("Subtotal: \(subtotal ?? 0.0)")
+                print("Tax: \(tax ?? 0.0))")
                 print("Total: \(total!)")
                 print("itemSum: \(itemSum)")
                 
-            
+                var pricesText: String = "Prices Found: "
                 
-                //attempt to remove subtotal
-                if itemSum != total {
-                    
+                for price in prices {
+                    // if it's not the last item add a comma
+                    if prices[prices.count - 1] != price {
+                        pricesText += "\(price), "
+                    } else {
+                        pricesText += "\(price)"
+                    }
                 }
+                
+                self.priceTextView.text = pricesText
+                self.itemTextView.text = "Subtotal: \(String(describing: subtotal ?? nil)) \nTax: \(String(describing: tax ?? nil)) \nTotal: \(total!)"
                 
                 
                 //NEW TO DO PLAN
@@ -196,59 +222,59 @@ extension ImagePickerViewController {
                 
                 
                 // Get face annotations
-                let faceAnnotations: JSON = responses["faceAnnotations"]
-                if faceAnnotations != nil {
-                    let emotions: Array<String> = ["joy", "sorrow", "surprise", "anger"]
-                    
-                    let numPeopleDetected:Int = faceAnnotations.count
-                    
-                    self.faceResults.text = "People detected: \(numPeopleDetected)\n\nEmotions detected:\n"
-                    
-                    var emotionTotals: [String: Double] = ["sorrow": 0, "joy": 0, "surprise": 0, "anger": 0]
-                    var emotionLikelihoods: [String: Double] = ["VERY_LIKELY": 0.9, "LIKELY": 0.75, "POSSIBLE": 0.5, "UNLIKELY":0.25, "VERY_UNLIKELY": 0.0]
-                    
-                    for index in 0..<numPeopleDetected {
-                        let personData:JSON = faceAnnotations[index]
-                        
-                        // Sum all the detected emotions
-                        for emotion in emotions {
-                            let lookup = emotion + "Likelihood"
-                            let result:String = personData[lookup].stringValue
-                            emotionTotals[emotion]! += emotionLikelihoods[result]!
-                        }
-                    }
-                    // Get emotion likelihood as a % and display in UI
-                    for (emotion, total) in emotionTotals {
-                        let likelihood:Double = total / Double(numPeopleDetected)
-                        let percent: Int = Int(round(likelihood * 100))
-                        self.faceResults.text! += "\(emotion): \(percent)%\n"
-                    }
-                } else {
-                    self.faceResults.text = "No faces found"
-                }
-                
-                // Get label annotations
-                let labelAnnotations: JSON = responses["labelAnnotations"]
-                let numLabels: Int = labelAnnotations.count
-                var labels: Array<String> = []
-                if numLabels > 0 {
-                    var labelResultsText:String = "Labels found: "
-                    for index in 0..<numLabels {
-                        let label = labelAnnotations[index]["description"].stringValue
-                        labels.append(label)
-                    }
-                    for label in labels {
-                        // if it's not the last item add a comma
-                        if labels[labels.count - 1] != label {
-                            labelResultsText += "\(label), "
-                        } else {
-                            labelResultsText += "\(label)"
-                        }
-                    }
-                    self.labelResults.text = labelResultsText
-                } else {
-                    self.labelResults.text = "No labels found"
-                }
+//                let faceAnnotations: JSON = responses["faceAnnotations"]
+//                if faceAnnotations != nil {
+//                    let emotions: Array<String> = ["joy", "sorrow", "surprise", "anger"]
+//                    
+//                    let numPeopleDetected:Int = faceAnnotations.count
+//                    
+//                    self.itemTextView.text = "People detected: \(numPeopleDetected)\n\nEmotions detected:\n"
+//                    
+//                    var emotionTotals: [String: Double] = ["sorrow": 0, "joy": 0, "surprise": 0, "anger": 0]
+//                    var emotionLikelihoods: [String: Double] = ["VERY_LIKELY": 0.9, "LIKELY": 0.75, "POSSIBLE": 0.5, "UNLIKELY":0.25, "VERY_UNLIKELY": 0.0]
+//                    
+//                    for index in 0..<numPeopleDetected {
+//                        let personData:JSON = faceAnnotations[index]
+//                        
+//                        // Sum all the detected emotions
+//                        for emotion in emotions {
+//                            let lookup = emotion + "Likelihood"
+//                            let result:String = personData[lookup].stringValue
+//                            emotionTotals[emotion]! += emotionLikelihoods[result]!
+//                        }
+//                    }
+//                    // Get emotion likelihood as a % and display in UI
+//                    for (emotion, total) in emotionTotals {
+//                        let likelihood:Double = total / Double(numPeopleDetected)
+//                        let percent: Int = Int(round(likelihood * 100))
+//                        self.itemTextView.text! += "\(emotion): \(percent)%\n"
+//                    }
+//                } else {
+//                    self.itemTextView.text = "No faces found"
+//                }
+//                
+//                // Get label annotations
+//                let labelAnnotations: JSON = responses["labelAnnotations"]
+//                let numLabels: Int = labelAnnotations.count
+//                var labels: Array<String> = []
+//                if numLabels > 0 {
+//                    var priceTextViewText:String = "Labels found: "
+//                    for index in 0..<numLabels {
+//                        let label = labelAnnotations[index]["description"].stringValue
+//                        labels.append(label)
+//                    }
+//                    for label in labels {
+//                        // if it's not the last item add a comma
+//                        if labels[labels.count - 1] != label {
+//                            priceTextViewText += "\(label), "
+//                        } else {
+//                            priceTextViewText += "\(label)"
+//                        }
+//                    }
+//                    self.priceTextView.text = priceTextViewText
+//                } else {
+//                    self.priceTextView.text = "No labels found"
+//                }
             }
         })
         
@@ -259,8 +285,8 @@ extension ImagePickerViewController {
             imageView.contentMode = .scaleAspectFit
             imageView.image = pickedImage // You could optionally display the image here by setting imageView.image = pickedImage
             spinner.startAnimating()
-            faceResults.isHidden = true
-            labelResults.isHidden = true
+            itemTextView.isHidden = true
+            priceTextView.isHidden = true
             
             // Base64 encode the image and create the request
             let binaryImageData = base64EncodeImage(pickedImage)
@@ -316,13 +342,8 @@ extension ImagePickerViewController {
                     "content": imageBase64
                 ],
                 "features": [
-                    //                    [
-                    //                        "type": "TEXT_DETECTIOn",
-                    //                        //"maxResults": 10
-                    //                    ],
                     [
                         "type": "DOCUMENT_TEXT_DETECTION",
-                        //"maxResults": 10
                     ]
                 ]
             ]
