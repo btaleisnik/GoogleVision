@@ -1,0 +1,6 @@
+framework module Pods_VisionTextDetection {
+  umbrella header "Pods-VisionTextDetection-umbrella.h"
+
+  export *
+  module * { export * }
+}
