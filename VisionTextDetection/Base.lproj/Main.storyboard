@@ -100,12 +100,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hQn-iU-omJ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hQn-iU-omJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="leading" secondItem="lOA-hM-cNr" secondAttribute="leading" id="9QL-aE-l4H"/>
+                            <constraint firstAttribute="trailing" secondItem="hQn-iU-omJ" secondAttribute="trailing" id="HHH-xA-SVj"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="top" secondItem="lOA-hM-cNr" secondAttribute="top" id="Urd-fq-crk"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="dgN-9u-mBw"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="receiptimageView" destination="hQn-iU-omJ" id="rbd-7P-fnE"/>
