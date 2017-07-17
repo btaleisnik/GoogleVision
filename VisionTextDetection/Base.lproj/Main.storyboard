@@ -70,7 +70,13 @@
                             <constraint firstItem="CJy-mX-kgx" firstAttribute="top" secondItem="mOp-TU-dBI" secondAttribute="bottom" constant="39" id="vLt-Gy-i0d"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Scan Image" id="ACB-Ok-C0j"/>
+                    <navigationItem key="navigationItem" title="Scan Image" id="ACB-Ok-C0j">
+                        <barButtonItem key="rightBarButtonItem" title="Scan" id="KvC-Mo-XH4">
+                            <connections>
+                                <segue destination="8Tw-m1-9O4" kind="show" identifier="navToScan" id="3yd-Er-HX1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="CJy-mX-kgx" id="aXG-c1-jP1"/>
                         <outlet property="itemTextView" destination="mOp-TU-dBI" id="REZ-Qh-vsm"/>
@@ -81,6 +87,33 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1082" y="777"/>
+        </scene>
+        <!--Scan View Controller-->
+        <scene sceneID="9dY-W0-zCT">
+            <objects>
+                <viewController id="8Tw-m1-9O4" customClass="ScanViewController" customModule="VisionTextDetection" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="D4F-Gs-TLE"/>
+                        <viewControllerLayoutGuide type="bottom" id="UhM-44-hua"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lOA-hM-cNr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hQn-iU-omJ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="receiptimageView" destination="hQn-iU-omJ" id="rbd-7P-fnE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dDp-ar-qKy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1812" y="776.76161919040487"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wCp-el-oa9">

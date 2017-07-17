@@ -13,6 +13,7 @@
 		CA3B31D41F178844005AAB8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA3B31D21F178844005AAB8B /* Main.storyboard */; };
 		CA3B31D61F178844005AAB8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA3B31D51F178844005AAB8B /* Assets.xcassets */; };
 		CA3B31D91F178844005AAB8B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA3B31D71F178844005AAB8B /* LaunchScreen.storyboard */; };
+		CABCFABE1F1CE80300F79389 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABCFABD1F1CE80300F79389 /* ScanViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		CA3B31D51F178844005AAB8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA3B31D81F178844005AAB8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA3B31DA1F178844005AAB8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CABCFABD1F1CE80300F79389 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				CA3B31CE1F178844005AAB8B /* AppDelegate.swift */,
 				CA3B31D01F178844005AAB8B /* ImagePickerViewController.swift */,
 				CA3B31D21F178844005AAB8B /* Main.storyboard */,
+				CABCFABD1F1CE80300F79389 /* ScanViewController.swift */,
 				CA3B31D51F178844005AAB8B /* Assets.xcassets */,
 				CA3B31D71F178844005AAB8B /* LaunchScreen.storyboard */,
 				CA3B31DA1F178844005AAB8B /* Info.plist */,
@@ -214,6 +217,7 @@
 			files = (
 				CA3B31D11F178844005AAB8B /* ImagePickerViewController.swift in Sources */,
 				CA3B31CF1F178844005AAB8B /* AppDelegate.swift in Sources */,
+				CABCFABE1F1CE80300F79389 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

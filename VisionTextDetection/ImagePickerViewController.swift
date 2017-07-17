@@ -28,6 +28,37 @@ extension String {
     }
 }
 
+struct Coordinate {
+    var x: Int?
+    var y: Int?
+    
+    init(x: Int?, y: Int?) {
+        self.x = x
+        self.y = y
+    }
+}
+
+struct BlockCoordinates {
+    var v1: Coordinate?
+    var v2: Coordinate?
+    var v3: Coordinate?
+    var v4: Coordinate?
+    
+    init() {
+        self.v1 = Coordinate(x: nil, y: nil)
+        self.v2 = Coordinate(x: nil, y: nil)
+        self.v3 = Coordinate(x: nil, y: nil)
+        self.v4 = Coordinate(x: nil, y: nil)
+    }
+    
+    init(v1: Coordinate?, v2: Coordinate?, v3: Coordinate?, v4: Coordinate?) {
+        self.v1 = v1
+        self.v2 = v2
+        self.v3 = v3
+        self.v4 = v4
+    }
+}
+
 
 // MARK: Easy string indexing functions
 extension String {
@@ -68,11 +99,26 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     var currentItem = Item()
     var allItems: [Item] = []
     
+    var allBlockCoordinates: [BlockCoordinates] = []
+
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var priceTextView: UITextView!
     @IBOutlet weak var itemTextView: UITextView!
 
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "navToScan" {
+            let scanVC = segue.destination as! ScanViewController
+
+            scanVC.allBlockCoordinates = self.allBlockCoordinates
+            scanVC.receiptImage = self.imageView.image
+            
+        }
+    }
+
+    
     
     var googleAPIKey = "AIzaSyD78xYTGtVFxFaHcHgthQNGTuF_vB6lHsw"
     var googleURL: URL {
@@ -204,8 +250,10 @@ extension ImagePickerViewController {
                     }
                 }
                 
+                
                 self.priceTextView.text = pricesText
-                self.itemTextView.text = "Subtotal: \(String(describing: subtotal ?? nil)) \nTax: \(String(describing: tax ?? nil)) \nTotal: \(total!)"
+                self.itemTextView.text = "Subtotal: \(String(format: "%.2f", (subtotal ?? 0.0))) \nTax: \(String(format: "%.2f", (tax ?? 0.0))) \nTotal: \(String(format: "%.2f", total!))"
+            
                 
                 
                 //NEW TO DO PLAN
@@ -215,6 +263,66 @@ extension ImagePickerViewController {
                 //Then ask to press the total, tax, and tip (if included)
                 
                 
+                
+                
+                
+                //ATTEMPTING TO ISOLATE BLOCK COORDINATES
+                var blockResponses: JSON = json["responses"][0]["fullTextAnnotation"]["pages"][0]["blocks"]
+                print(blockResponses)
+                
+                print("\n\nNumber of blocks: \(blockResponses.count)\n")
+
+                var coord1: Coordinate?
+                var coord2: Coordinate?
+                var coord3: Coordinate?
+                var coord4: Coordinate?
+                
+                for i in 0..<blockResponses.count {
+                    var currentVertices = blockResponses[i]["boundingBox"]["vertices"]
+                    print(currentVertices)
+                    
+                    var counter = 0
+                    for x in currentVertices {
+                        print(x.1["x"])
+                        print(x.1["y"])
+                        
+//                        var xTest = x.1["x"]
+//                        var yTest = x.1["y"]
+                        
+                        //xTest.rawNumber
+                        
+                        let intX = Int((x.1["x"].rawValue as? NSNumber)!)
+                        let intY = Int((x.1["y"].rawValue as? NSNumber)!)
+                        
+                        print(intX)
+                        
+                        
+                        switch counter
+                        {
+                        case 0:
+                            coord1 = Coordinate(x: intX, y: intY)
+                            break
+                        case 1:
+                            coord2 = Coordinate(x: intX, y: intY)
+                            break
+                        case 2:
+                            coord3 = Coordinate(x: intX, y: intY)
+                            break
+                        case 3:
+                            coord4 = Coordinate(x: intX, y: intY)
+                            break
+                        default:
+                            print("Error; Invalid coordinates")
+                        }
+                        
+                        counter += 1
+                    }
+                    
+                    let currentBlock = BlockCoordinates(v1: coord1, v2: coord2, v3: coord3, v4: coord4)
+                    self.allBlockCoordinates.append(currentBlock)
+                    
+                }
+
                 
                 
                 
