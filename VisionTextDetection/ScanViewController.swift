@@ -10,7 +10,7 @@ import UIKit
 
 class ScanViewController: UIViewController {
     
-    var allBlockCoordinates: [BlockCoordinates] = []
+    var allBlocks: [Block] = []
     var receiptImage: UIImage?
 
     @IBOutlet weak var receiptimageView: UIImageView!
@@ -29,27 +29,27 @@ class ScanViewController: UIViewController {
             receiptimageView.image = currentReciept
         }
         print("\n\n\nNEW CONTROLLER")
-        print(allBlockCoordinates)
+        print(allBlocks)
         
         print(imageLocation)
         
-        if allBlockCoordinates.count > 0 {
+        if allBlocks.count > 0 {
             //draw original blocks
-            for block in allBlockCoordinates {
+//            for block in allBlocks {
+//                let button = calcButtonCoordinates(block: block)
+//                button.addTarget(self, action: #selector(ratingButtonTapped), for: .touchUpInside)
+//                button.layer.borderColor = UIColor.green.cgColor
+//                button.layer.borderWidth = 2
+//                view.addSubview(button)
+//            }
+            
+            let newBlock: [Block] = rescaleBlock(viewSize: viewSize, imageSize: receiptImage?.size, allBlocks: allBlocks, imageLocation: imageLocation)
+            
+            //draw re-scaled blocks
+            for block in newBlock {
                 let button = calcButtonCoordinates(block: block)
                 button.addTarget(self, action: #selector(ratingButtonTapped), for: .touchUpInside)
                 button.layer.borderColor = UIColor.green.cgColor
-                button.layer.borderWidth = 2
-                view.addSubview(button)
-            }
-            
-            let newBlockCoordinates: [BlockCoordinates] = rescaleBlockCoordinates(viewSize: viewSize, imageSize: receiptImage?.size, allBlockCoordinates: allBlockCoordinates, imageLocation: imageLocation)
-            
-            //draw re-scaled blocks
-            for block in newBlockCoordinates {
-                let button = calcButtonCoordinates(block: block)
-                button.addTarget(self, action: #selector(ratingButtonTapped), for: .touchUpInside)
-                button.layer.borderColor = UIColor.red.cgColor
                 button.layer.borderWidth = 2
                 view.addSubview(button)
             }
@@ -65,7 +65,7 @@ class ScanViewController: UIViewController {
         print("Button pressed")
     }
     
-    func calcButtonCoordinates(block: BlockCoordinates)->UIButton {
+    func calcButtonCoordinates(block: Block)->UIButton {
         let x = block.v1?.x
         let y = block.v1?.y
         let width = (block.v2?.x)! - (block.v1?.x)!
@@ -74,14 +74,14 @@ class ScanViewController: UIViewController {
         return UIButton(frame: CGRect(x: x!, y: y!, width: width, height: height))
     }
     
-    func rescaleBlockCoordinates(viewSize: CGSize, imageSize: CGSize?, allBlockCoordinates: [BlockCoordinates], imageLocation: CGPoint) -> [BlockCoordinates] {
+    func rescaleBlock(viewSize: CGSize, imageSize: CGSize?, allBlocks: [Block], imageLocation: CGPoint) -> [Block] {
         
         let imageHeight = imageSize?.height
         let imageWidth = imageSize?.width
         let viewHeight = viewSize.height
         let viewWidth = viewSize.width
         
-        var newBlockCoordinates: [BlockCoordinates] = allBlockCoordinates
+        var newBlock: [Block] = allBlocks
         
         //If view size > image size, xScaler and yScaler will be >1 and will expand block
         //If image size > view size, xScaler and yScaler will be <1 and will reduce block
@@ -91,16 +91,16 @@ class ScanViewController: UIViewController {
         //Re-scale x coordinates using xScale multiplier and adjust for non 0,0 position
 
         var i = 0
-        for block in allBlockCoordinates {
-//                newBlockCoordinates[i].v1?.x = ((block.v1?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
-//                newBlockCoordinates[i].v2?.x = ((block.v2?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
-//                newBlockCoordinates[i].v3?.x = ((block.v3?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
-//                newBlockCoordinates[i].v4?.x = ((block.v4?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
+        for block in allBlocks {
+//                newBlock[i].v1?.x = ((block.v1?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
+//                newBlock[i].v2?.x = ((block.v2?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
+//                newBlock[i].v3?.x = ((block.v3?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
+//                newBlock[i].v4?.x = ((block.v4?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
             
-            newBlockCoordinates[i].v1?.x = (CGFloat((block.v1?.x)!) * (xScaler)) //+ imageLocation.x
-            newBlockCoordinates[i].v2?.x = (CGFloat((block.v2?.x)!) * (xScaler)) //+ imageLocation.x
-            newBlockCoordinates[i].v3?.x = (CGFloat((block.v3?.x)!) * (xScaler)) //+ imageLocation.x
-            newBlockCoordinates[i].v4?.x = (CGFloat((block.v4?.x)!) * (xScaler)) //+ imageLocation.x
+            newBlock[i].v1?.x = (CGFloat((block.v1?.x)!) * (xScaler)) //+ imageLocation.x
+            newBlock[i].v2?.x = (CGFloat((block.v2?.x)!) * (xScaler)) //+ imageLocation.x
+            newBlock[i].v3?.x = (CGFloat((block.v3?.x)!) * (xScaler)) //+ imageLocation.x
+            newBlock[i].v4?.x = (CGFloat((block.v4?.x)!) * (xScaler)) //+ imageLocation.x
 
 
 
@@ -113,16 +113,16 @@ class ScanViewController: UIViewController {
         //Re-scale y coordinates using yScaler multiplier, and adjust for non 0,0 position
 
         i = 0
-        for block in allBlockCoordinates {
-//                newBlockCoordinates[i].v1?.y = ((block.v1?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
-//                newBlockCoordinates[i].v2?.y = ((block.v2?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
-//                newBlockCoordinates[i].v3?.y = ((block.v3?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
-//                newBlockCoordinates[i].v4?.y = ((block.v4?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
+        for block in allBlocks {
+//                newBlock[i].v1?.y = ((block.v1?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
+//                newBlock[i].v2?.y = ((block.v2?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
+//                newBlock[i].v3?.y = ((block.v3?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
+//                newBlock[i].v4?.y = ((block.v4?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
             
-            newBlockCoordinates[i].v1?.y = (CGFloat((block.v1?.y)!) * (yScaler)) //+ imageLocation.y
-            newBlockCoordinates[i].v2?.y = (CGFloat((block.v2?.y)!) * (yScaler)) //+ imageLocation.y
-            newBlockCoordinates[i].v3?.y = (CGFloat((block.v3?.y)!) * (yScaler)) //+ imageLocation.y
-            newBlockCoordinates[i].v4?.y = (CGFloat((block.v4?.y)!) * (yScaler)) //+ imageLocation.y
+            newBlock[i].v1?.y = (CGFloat((block.v1?.y)!) * (yScaler)) //+ imageLocation.y
+            newBlock[i].v2?.y = (CGFloat((block.v2?.y)!) * (yScaler)) //+ imageLocation.y
+            newBlock[i].v3?.y = (CGFloat((block.v3?.y)!) * (yScaler)) //+ imageLocation.y
+            newBlock[i].v4?.y = (CGFloat((block.v4?.y)!) * (yScaler)) //+ imageLocation.y
 
                 
             i += 1
@@ -130,7 +130,7 @@ class ScanViewController: UIViewController {
             
     
         
-        return newBlockCoordinates
+        return newBlock
     }
 
     override func didReceiveMemoryWarning() {

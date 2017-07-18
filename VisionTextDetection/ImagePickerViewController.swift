@@ -28,6 +28,40 @@ extension String {
     }
 }
 
+//If detectedBreak key exists in symbols->property:
+//add " " for SPACE
+//add \n for EQL_SURE_SPACE
+//add new paragraph for LINE_BREAK
+
+struct Symbol {
+    var text: String?
+    var addSpace: Bool?
+    var newLine: Bool?
+    var newParagraph: Bool?
+    
+    init() {
+        addSpace = false
+        newLine = false
+        newParagraph = false
+    }
+}
+
+struct Word {
+    var word: [Symbol]
+    
+    init() {
+        word = []
+    }
+}
+
+struct Paragraph {
+    var paragraph: [Word]
+    
+    init() {
+        paragraph = []
+    }
+}
+
 struct Coordinate {
     var x: CGFloat?
     var y: CGFloat?
@@ -38,7 +72,7 @@ struct Coordinate {
     }
 }
 
-struct BlockCoordinates {
+struct Block {
     var v1: Coordinate?
     var v2: Coordinate?
     var v3: Coordinate?
@@ -99,7 +133,7 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     var currentItem = Item()
     var allItems: [Item] = []
     
-    var allBlockCoordinates: [BlockCoordinates] = []
+    var allBlocks: [Block] = []
 
     
     @IBOutlet weak var imageView: UIImageView!
@@ -112,7 +146,7 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
         if segue.identifier == "navToScan" {
             let scanVC = segue.destination as! ScanViewController
 
-            scanVC.allBlockCoordinates = self.allBlockCoordinates
+            scanVC.allBlocks = self.allBlocks
             scanVC.receiptImage = self.imageView.image
             
         }
@@ -280,23 +314,20 @@ extension ImagePickerViewController {
                 var coord4: Coordinate?
                 
                 for i in 0..<blockResponses.count {
-                    var currentVertices = blockResponses[i]["boundingBox"]["vertices"]
-                    print(currentVertices)
                     
+                    var currentBlock = Block()
+
+                    var currentVertices = blockResponses[i]["boundingBox"]["vertices"]
+                    //print(currentVertices)
+                    
+                    //Get Block Coordinates
                     var counter = 0
                     for x in currentVertices {
-                        print(x.1["x"])
-                        print(x.1["y"])
-                        
-//                        var xTest = x.1["x"]
-//                        var yTest = x.1["y"]
-                        
-                        //xTest.rawNumber
-                        
+
                         let cgfloatX = CGFloat((x.1["x"].rawValue as? NSNumber)!)
                         let cgfloatY = CGFloat((x.1["y"].rawValue as? NSNumber)!)
                         
-                        print(cgfloatX)
+                        //print(cgfloatX)
                         
                         
                         switch counter
@@ -320,8 +351,69 @@ extension ImagePickerViewController {
                         counter += 1
                     }
                     
-                    let currentBlock = BlockCoordinates(v1: coord1, v2: coord2, v3: coord3, v4: coord4)
-                    self.allBlockCoordinates.append(currentBlock)
+                    
+
+                    //If detectedBreak key exists in symbols->property:
+                    //add " " for SPACE
+                    //add \n for EQL_SURE_SPACE
+                    //add new paragraph for LINE_BREAK
+                    
+                    //For loop for each block
+                    for i in 0..<blockResponses.count {
+                        var blockJSON = blockResponses[i]
+                        
+                        //For each paragraph in current block
+                        for j in 0..<blockJSON.count {
+                            var paragraphJSON = blockJSON["paragraphs"][j]
+                            
+                            var currentParagraph = Paragraph()
+                            
+                            //For each word in paragraph
+                            for k in 0..<paragraphJSON.count {
+                                var wordsJSON = paragraphJSON["words"][k]
+                                
+                                var currentWord = Word()
+                                
+                                //For each symbol in word
+                                for m in 0..<wordsJSON.count {
+                                    
+                                    var currentSymbol = Symbol()
+                                    
+                                    //check if detectedBreak property is present for symbol
+                                    if wordsJSON[m]["property"]["detectedBreak"] != JSON.null {
+                                        let detectedBreak = wordsJSON[m]["property"]["detectedBreak"]["type"]
+                                        
+                                        //add flag for appropriate special character
+                                        if detectedBreak == "SPACE" {
+                                            currentSymbol.addSpace = true
+                                        } else if detectedBreak == "EQL_SURE_SPACE" {
+                                            currentSymbol.newLine = true
+                                        } else if detectedBreak == "LINE_BREAK" {
+                                            currentSymbol.newParagraph = true
+                                        } else {
+                                            print(detectedBreak)
+                                        }
+                                    }
+                                    
+                                    
+                                    currentSymbol.text = wordsJSON[m]["text"].description
+                                    currentWord.word.append(currentSymbol)
+                                }
+                                
+                                currentParagraph.paragraph.append(currentWord)
+                                
+                            }
+                            
+                            //Add currentParagraph to current currentBlock
+                        }
+                        
+                    }
+                    
+                    
+                    
+                    //Add currentBlock to allBlocks
+                    currentBlock = Block(v1: coord1, v2: coord2, v3: coord3, v4: coord4)
+                    self.allBlocks.append(currentBlock)
                     
                 }
 
