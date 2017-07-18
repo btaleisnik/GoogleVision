@@ -30,7 +30,7 @@ extension String {
 
 //If detectedBreak key exists in symbols->property:
 //add " " for SPACE
-//add \n for EQL_SURE_SPACE
+//add \n for EOL_SURE_SPACE
 //add new paragraph for LINE_BREAK
 
 struct Symbol {
@@ -234,6 +234,7 @@ extension ImagePickerViewController {
 //                }
                 
                 var prices: [Double] = []
+                print(receiptTextArray)
                 
                 for i in receiptTextArray {
                     if let priceDouble = i.doubleValue {
@@ -306,7 +307,7 @@ extension ImagePickerViewController {
                 
                 //print("\n\nNumber of blocks: \(blockResponses.count)\n")
                 
-                print(blockResponses[0])
+                //print(blockResponses[0])
 
                 var coord1: Coordinate?
                 var coord2: Coordinate?
@@ -358,35 +359,35 @@ extension ImagePickerViewController {
                     //add \n for EQL_SURE_SPACE
                     //add new paragraph for LINE_BREAK
                     
-                    //For loop for each block
-                    for i in 0..<blockResponses.count {
-                        var blockJSON = blockResponses[i]
+                    //For each block in receipt
+                    for x in 0..<blockResponses.count {
+                        var paragraphJSON = blockResponses[x]["paragraphs"]
                         
                         //For each paragraph in current block
-                        for j in 0..<blockJSON.count {
-                            var paragraphJSON = blockJSON["paragraphs"][j]
+                        for j in 0..<paragraphJSON.count {
+                            var wordsJSON = paragraphJSON[j]["words"]
                             
                             var currentParagraph = Paragraph()
                             
                             //For each word in paragraph
-                            for k in 0..<paragraphJSON.count {
-                                var wordsJSON = paragraphJSON["words"][k]
+                            for k in 0..<wordsJSON.count {
+                                var symbolsJSON = wordsJSON[k]["symbols"]
                                 
                                 var currentWord = Word()
                                 
                                 //For each symbol in word
-                                for m in 0..<wordsJSON.count {
+                                for m in 0..<symbolsJSON.count {
                                     
                                     var currentSymbol = Symbol()
                                     
                                     //check if detectedBreak property is present for symbol
-                                    if wordsJSON[m]["property"]["detectedBreak"] != JSON.null {
-                                        let detectedBreak = wordsJSON[m]["property"]["detectedBreak"]["type"]
+                                    if symbolsJSON[m]["property"]["detectedBreak"] != JSON.null {
+                                        let detectedBreak = symbolsJSON[m]["property"]["detectedBreak"]["type"]
                                         
                                         //add flag for appropriate special character
                                         if detectedBreak == "SPACE" {
                                             currentSymbol.addSpace = true
-                                        } else if detectedBreak == "EQL_SURE_SPACE" {
+                                        } else if detectedBreak == "EOL_SURE_SPACE" {
                                             currentSymbol.newLine = true
                                         } else if detectedBreak == "LINE_BREAK" {
                                             currentSymbol.newParagraph = true
@@ -396,15 +397,15 @@ extension ImagePickerViewController {
                                     }
                                     
                                     
-                                    currentSymbol.text = wordsJSON[m]["text"].description
+                                    currentSymbol.text = symbolsJSON[m]["text"].description
                                     currentWord.word.append(currentSymbol)
                                 }
                                 
                                 currentParagraph.paragraph.append(currentWord)
-                                
                             }
                             
                             //Add currentParagraph to current currentBlock
+                            self.paragraphToBlock(paragraph: currentParagraph)
                         }
                         
                     }
@@ -480,6 +481,23 @@ extension ImagePickerViewController {
             }
         })
         
+    }
+    
+    func paragraphToBlock(paragraph: Paragraph) {
+        
+        for i in 0..<paragraph.paragraph.count {
+            for j in 0..<paragraph.paragraph[i].word.count {
+                print(paragraph.paragraph[i].word[j].text!, terminator:"")
+                if paragraph.paragraph[i].word[j].addSpace == true {
+                    print(" ", terminator:"")
+                } else if paragraph.paragraph[i].word[j].newLine == true {
+                    print("\n", terminator:"")
+                } else if paragraph.paragraph[i].word[j].newParagraph == true {
+                    print("\n\nNEW PARAGRAPH")
+                }
+            }
+            
+        }
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
