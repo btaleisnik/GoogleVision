@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cgc-IN-IKA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cgc-IN-IKA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -100,16 +100,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hQn-iU-omJ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="receipt2" translatesAutoresizingMaskIntoConstraints="NO" id="hQn-iU-omJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="leading" secondItem="lOA-hM-cNr" secondAttribute="leading" id="9QL-aE-l4H"/>
-                            <constraint firstAttribute="trailing" secondItem="hQn-iU-omJ" secondAttribute="trailing" id="HHH-xA-SVj"/>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="top" secondItem="lOA-hM-cNr" secondAttribute="top" id="Urd-fq-crk"/>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="dgN-9u-mBw"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="top" secondItem="lOA-hM-cNr" secondAttribute="top" id="6Ca-57-A6g"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="edX-7Z-Jex"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="leading" secondItem="lOA-hM-cNr" secondAttribute="leading" id="q5b-gb-k2N"/>
+                            <constraint firstAttribute="trailing" secondItem="hQn-iU-omJ" secondAttribute="trailing" id="s0b-yZ-Y4i"/>
                         </constraints>
                     </view>
                     <connections>
@@ -139,4 +139,7 @@
             <point key="canvasLocation" x="117.59999999999999" y="776.76161919040487"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="receipt2" width="316" height="450"/>
+    </resources>
 </document>

@@ -29,10 +29,10 @@ extension String {
 }
 
 struct Coordinate {
-    var x: Int?
-    var y: Int?
+    var x: CGFloat?
+    var y: CGFloat?
     
-    init(x: Int?, y: Int?) {
+    init(x: CGFloat?, y: CGFloat?) {
         self.x = x
         self.y = y
     }
@@ -291,25 +291,25 @@ extension ImagePickerViewController {
                         
                         //xTest.rawNumber
                         
-                        let intX = Int((x.1["x"].rawValue as? NSNumber)!)
-                        let intY = Int((x.1["y"].rawValue as? NSNumber)!)
+                        let cgfloatX = CGFloat((x.1["x"].rawValue as? NSNumber)!)
+                        let cgfloatY = CGFloat((x.1["y"].rawValue as? NSNumber)!)
                         
-                        print(intX)
+                        print(cgfloatX)
                         
                         
                         switch counter
                         {
                         case 0:
-                            coord1 = Coordinate(x: intX, y: intY)
+                            coord1 = Coordinate(x: cgfloatX, y: cgfloatY)
                             break
                         case 1:
-                            coord2 = Coordinate(x: intX, y: intY)
+                            coord2 = Coordinate(x: cgfloatX, y: cgfloatY)
                             break
                         case 2:
-                            coord3 = Coordinate(x: intX, y: intY)
+                            coord3 = Coordinate(x: cgfloatX, y: cgfloatY)
                             break
                         case 3:
-                            coord4 = Coordinate(x: intX, y: intY)
+                            coord4 = Coordinate(x: cgfloatX, y: cgfloatY)
                             break
                         default:
                             print("Error; Invalid coordinates")
