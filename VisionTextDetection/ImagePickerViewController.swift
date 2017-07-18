@@ -180,14 +180,14 @@ extension ImagePickerViewController {
 //                
                 
                 var rawReceiptData = responses.rawString()
-                print(rawReceiptData)
+                //print(rawReceiptData)
                 //replace all , with . so $ amounts are in Double format
                 rawReceiptData = rawReceiptData?.replacingOccurrences(of: ",", with: ".")
                 
                 let receiptTextArray = (rawReceiptData?.components(separatedBy: .newlines))!
                 
-                print("\nCURRENT RECEIPT TEXT")
-                print(rawReceiptData!)
+                //print("\nCURRENT RECEIPT TEXT")
+                //print(rawReceiptData!)
                 
                 
 //                var receiptReversed: [String] = []
@@ -205,7 +205,7 @@ extension ImagePickerViewController {
                     if let priceDouble = i.doubleValue {
                         //if free item, we don't care
                         if priceDouble > 0 {
-                            print(priceDouble)
+                            //print(priceDouble)
                             prices.append(priceDouble)
                         }
                     }
@@ -234,10 +234,10 @@ extension ImagePickerViewController {
                 
                 
                 
-                print("Subtotal: \(subtotal ?? 0.0)")
-                print("Tax: \(tax ?? 0.0))")
-                print("Total: \(total!)")
-                print("itemSum: \(itemSum)")
+                //print("Subtotal: \(subtotal ?? 0.0)")
+               // print("Tax: \(tax ?? 0.0))")
+                //print("Total: \(total!)")
+                //print("itemSum: \(itemSum)")
                 
                 var pricesText: String = "Prices Found: "
                 
@@ -268,9 +268,11 @@ extension ImagePickerViewController {
                 
                 //ATTEMPTING TO ISOLATE BLOCK COORDINATES
                 var blockResponses: JSON = json["responses"][0]["fullTextAnnotation"]["pages"][0]["blocks"]
-                print(blockResponses)
+                //print(blockResponses)
                 
-                print("\n\nNumber of blocks: \(blockResponses.count)\n")
+                //print("\n\nNumber of blocks: \(blockResponses.count)\n")
+                
+                print(blockResponses[0])
 
                 var coord1: Coordinate?
                 var coord2: Coordinate?

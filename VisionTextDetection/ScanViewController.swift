@@ -89,49 +89,46 @@ class ScanViewController: UIViewController {
         let yScaler = viewHeight/imageHeight!
         
         //Re-scale x coordinates using xScale multiplier and adjust for non 0,0 position
-        if (viewWidth/imageWidth!) >= (imageWidth!/viewWidth) {
 
-            var i = 0
-            for block in allBlockCoordinates {
+        var i = 0
+        for block in allBlockCoordinates {
 //                newBlockCoordinates[i].v1?.x = ((block.v1?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
 //                newBlockCoordinates[i].v2?.x = ((block.v2?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
 //                newBlockCoordinates[i].v3?.x = ((block.v3?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
 //                newBlockCoordinates[i].v4?.x = ((block.v4?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
-                
-                newBlockCoordinates[i].v1?.x = (CGFloat((block.v1?.x)!) * (xScaler)) //+ imageLocation.x
-                newBlockCoordinates[i].v2?.x = (CGFloat((block.v2?.x)!) * (xScaler)) //+ imageLocation.x
-                newBlockCoordinates[i].v3?.x = (CGFloat((block.v3?.x)!) * (xScaler)) //+ imageLocation.x
-                newBlockCoordinates[i].v4?.x = (CGFloat((block.v4?.x)!) * (xScaler)) //+ imageLocation.x
+            
+            newBlockCoordinates[i].v1?.x = (CGFloat((block.v1?.x)!) * (xScaler)) //+ imageLocation.x
+            newBlockCoordinates[i].v2?.x = (CGFloat((block.v2?.x)!) * (xScaler)) //+ imageLocation.x
+            newBlockCoordinates[i].v3?.x = (CGFloat((block.v3?.x)!) * (xScaler)) //+ imageLocation.x
+            newBlockCoordinates[i].v4?.x = (CGFloat((block.v4?.x)!) * (xScaler)) //+ imageLocation.x
 
 
- 
-                i += 1
-                
-            }
 
+            i += 1
             
         }
+
+            
         
         //Re-scale y coordinates using yScaler multiplier, and adjust for non 0,0 position
-        if (viewHeight/imageHeight!) >= (imageHeight!/viewHeight) {
-            
-            var i = 0
-            for block in allBlockCoordinates {
+
+        i = 0
+        for block in allBlockCoordinates {
 //                newBlockCoordinates[i].v1?.y = ((block.v1?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
 //                newBlockCoordinates[i].v2?.y = ((block.v2?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
 //                newBlockCoordinates[i].v3?.y = ((block.v3?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
 //                newBlockCoordinates[i].v4?.y = ((block.v4?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
-                
-                newBlockCoordinates[i].v1?.y = (CGFloat((block.v1?.y)!) * (yScaler)) //+ imageLocation.y
-                newBlockCoordinates[i].v2?.y = (CGFloat((block.v2?.y)!) * (yScaler)) //+ imageLocation.y
-                newBlockCoordinates[i].v3?.y = (CGFloat((block.v3?.y)!) * (yScaler)) //+ imageLocation.y
-                newBlockCoordinates[i].v4?.y = (CGFloat((block.v4?.y)!) * (yScaler)) //+ imageLocation.y
+            
+            newBlockCoordinates[i].v1?.y = (CGFloat((block.v1?.y)!) * (yScaler)) //+ imageLocation.y
+            newBlockCoordinates[i].v2?.y = (CGFloat((block.v2?.y)!) * (yScaler)) //+ imageLocation.y
+            newBlockCoordinates[i].v3?.y = (CGFloat((block.v3?.y)!) * (yScaler)) //+ imageLocation.y
+            newBlockCoordinates[i].v4?.y = (CGFloat((block.v4?.y)!) * (yScaler)) //+ imageLocation.y
 
                 
-                i += 1
-            }
-            
+            i += 1
         }
+            
+    
         
         return newBlockCoordinates
     }
