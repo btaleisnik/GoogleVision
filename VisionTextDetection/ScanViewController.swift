@@ -43,18 +43,7 @@ class ScanViewController: UIViewController {
 
         //progressView.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-//        scanLine.layer.borderWidth = 2
-//        scanLine.layer.borderColor = UIColor.blue.cgColor
-//        scanLine.frame.size = CGSize(width: self.view.frame.width, height: 0)
-      
-        
-//        UILabel.animate(withDuration: 2.0, animations: {
-//            self.scanLine.center = CGPoint(x: 0, y: 0)
-//            
-//        })
 
-        
         //let viewSize = receiptimageView.frame.size
         let viewSize = self.view.frame.size
         let imageLocation = receiptimageView.frame.origin
@@ -229,17 +218,11 @@ class ScanViewController: UIViewController {
 
         var i = 0
         for block in allBlocks {
-//                newBlock[i].v1?.x = ((block.v1?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
-//                newBlock[i].v2?.x = ((block.v2?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
-//                newBlock[i].v3?.x = ((block.v3?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
-//                newBlock[i].v4?.x = ((block.v4?.x!)! + CGFloat(imageLocation.x)) * (xScaler)
             
             newBlock[i].v1?.x = (CGFloat((block.v1?.x)!) * (xScaler)) //+ imageLocation.x
             newBlock[i].v2?.x = (CGFloat((block.v2?.x)!) * (xScaler)) //+ imageLocation.x
             newBlock[i].v3?.x = (CGFloat((block.v3?.x)!) * (xScaler)) //+ imageLocation.x
             newBlock[i].v4?.x = (CGFloat((block.v4?.x)!) * (xScaler)) //+ imageLocation.x
-
-
 
             i += 1
             
@@ -251,17 +234,12 @@ class ScanViewController: UIViewController {
 
         i = 0
         for block in allBlocks {
-//                newBlock[i].v1?.y = ((block.v1?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
-//                newBlock[i].v2?.y = ((block.v2?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
-//                newBlock[i].v3?.y = ((block.v3?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
-//                newBlock[i].v4?.y = ((block.v4?.y!)! + CGFloat(imageLocation.y)) * (yScaler)
             
             newBlock[i].v1?.y = (CGFloat((block.v1?.y)!) * (yScaler)) //+ imageLocation.y
             newBlock[i].v2?.y = (CGFloat((block.v2?.y)!) * (yScaler)) //+ imageLocation.y
             newBlock[i].v3?.y = (CGFloat((block.v3?.y)!) * (yScaler)) //+ imageLocation.y
             newBlock[i].v4?.y = (CGFloat((block.v4?.y)!) * (yScaler)) //+ imageLocation.y
 
-                
             i += 1
         }
             
@@ -274,16 +252,5 @@ class ScanViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

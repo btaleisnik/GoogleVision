@@ -163,8 +163,6 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
 
-    
-    
     var googleAPIKey = "AIzaSyD78xYTGtVFxFaHcHgthQNGTuF_vB6lHsw"
     var googleURL: URL {
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
@@ -237,7 +235,7 @@ extension ImagePickerViewController {
                     
                     var currentBlock = Block()
 
-                    var currentVertices = blockResponses[i]["boundingBox"]["vertices"]
+                    let currentVertices = blockResponses[i]["boundingBox"]["vertices"]
                     //print(currentVertices)
                     
                     //Get Block Coordinates
@@ -423,6 +421,8 @@ extension ImagePickerViewController {
         
     }
     
+    
+    //MARK: JSON Helper Files
     func paragraphToBlock(paragraph: Paragraph) -> [String] {
         
         var paragraphRawText: String = ""
@@ -469,7 +469,7 @@ extension ImagePickerViewController {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageView.contentMode = .scaleAspectFit
-            imageView.image = pickedImage // You could optionally display the image here by setting imageView.image = pickedImage
+            imageView.image = pickedImage
             spinner.startAnimating()
             itemTextView.isHidden = true
             priceTextView.isHidden = true
