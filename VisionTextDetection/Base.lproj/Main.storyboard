@@ -22,8 +22,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="L7z-I6-GXy" userLabel="Price Results">
-                                <rect key="frame" x="0.0" y="64" width="375" height="115"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="L7z-I6-GXy" userLabel="Price Results">
+                                <rect key="frame" x="0.0" y="64" width="375" height="30"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="115" id="R2c-dn-lWe"/>
@@ -86,7 +86,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1082" y="777"/>
+            <point key="canvasLocation" x="1080.8" y="776.76161919040487"/>
         </scene>
         <!--Scan View Controller-->
         <scene sceneID="9dY-W0-zCT">
@@ -106,10 +106,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="top" secondItem="lOA-hM-cNr" secondAttribute="top" id="6Ca-57-A6g"/>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="edX-7Z-Jex"/>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="leading" secondItem="lOA-hM-cNr" secondAttribute="leading" id="q5b-gb-k2N"/>
-                            <constraint firstAttribute="trailing" secondItem="hQn-iU-omJ" secondAttribute="trailing" id="s0b-yZ-Y4i"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="548-Nx-Kzb"/>
+                            <constraint firstAttribute="trailing" secondItem="hQn-iU-omJ" secondAttribute="trailing" id="RXs-3d-b2u"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="top" secondItem="lOA-hM-cNr" secondAttribute="top" id="bHQ-zO-KyH"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="leading" secondItem="lOA-hM-cNr" secondAttribute="leading" id="mCI-18-t4i"/>
                         </constraints>
                     </view>
                     <connections>

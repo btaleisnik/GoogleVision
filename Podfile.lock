@@ -1,12 +1,15 @@
 PODS:
+  - DSGradientProgressView (1.0.0)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
+  - DSGradientProgressView
   - SwiftyJSON
 
 SPEC CHECKSUMS:
+  DSGradientProgressView: b591b4dfc6a7491fbd1f8dedee7a6ce02b23640f
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 814d76545d6ebbe4e0f19372fb83c9182ddcd9cc
+PODFILE CHECKSUM: e893681cc6333127bea679c17493c760a83155f6
 
 COCOAPODS: 1.2.1

@@ -14,6 +14,7 @@
 
 import UIKit
 import SwiftyJSON
+import DSGradientProgressView
 
 
 struct Item {
@@ -344,7 +345,7 @@ extension ImagePickerViewController {
                 //////////////////////////////////////////////////////////////////////////////////////////////
 
                 // Parse the response
-                var responses: JSON = json["responses"][0]["textAnnotations"][0]["description"]
+                let responses: JSON = json["responses"][0]["textAnnotations"][0]["description"]
                 
                 var rawReceiptData = responses.rawString()
                 
@@ -413,67 +414,6 @@ extension ImagePickerViewController {
                         print(block.paragraphs[i])
                     }
                 }
-
-                
-                
-                
-                
-                
-                
-                // Get face annotations
-//                let faceAnnotations: JSON = responses["faceAnnotations"]
-//                if faceAnnotations != nil {
-//                    let emotions: Array<String> = ["joy", "sorrow", "surprise", "anger"]
-//                    
-//                    let numPeopleDetected:Int = faceAnnotations.count
-//                    
-//                    self.itemTextView.text = "People detected: \(numPeopleDetected)\n\nEmotions detected:\n"
-//                    
-//                    var emotionTotals: [String: Double] = ["sorrow": 0, "joy": 0, "surprise": 0, "anger": 0]
-//                    var emotionLikelihoods: [String: Double] = ["VERY_LIKELY": 0.9, "LIKELY": 0.75, "POSSIBLE": 0.5, "UNLIKELY":0.25, "VERY_UNLIKELY": 0.0]
-//                    
-//                    for index in 0..<numPeopleDetected {
-//                        let personData:JSON = faceAnnotations[index]
-//                        
-//                        // Sum all the detected emotions
-//                        for emotion in emotions {
-//                            let lookup = emotion + "Likelihood"
-//                            let result:String = personData[lookup].stringValue
-//                            emotionTotals[emotion]! += emotionLikelihoods[result]!
-//                        }
-//                    }
-//                    // Get emotion likelihood as a % and display in UI
-//                    for (emotion, total) in emotionTotals {
-//                        let likelihood:Double = total / Double(numPeopleDetected)
-//                        let percent: Int = Int(round(likelihood * 100))
-//                        self.itemTextView.text! += "\(emotion): \(percent)%\n"
-//                    }
-//                } else {
-//                    self.itemTextView.text = "No faces found"
-//                }
-//                
-//                // Get label annotations
-//                let labelAnnotations: JSON = responses["labelAnnotations"]
-//                let numLabels: Int = labelAnnotations.count
-//                var labels: Array<String> = []
-//                if numLabels > 0 {
-//                    var priceTextViewText:String = "Labels found: "
-//                    for index in 0..<numLabels {
-//                        let label = labelAnnotations[index]["description"].stringValue
-//                        labels.append(label)
-//                    }
-//                    for label in labels {
-//                        // if it's not the last item add a comma
-//                        if labels[labels.count - 1] != label {
-//                            priceTextViewText += "\(label), "
-//                        } else {
-//                            priceTextViewText += "\(label)"
-//                        }
-//                    }
-//                    self.priceTextView.text = priceTextViewText
-//                } else {
-//                    self.priceTextView.text = "No labels found"
-//                }
             }
         })
         
@@ -495,29 +435,12 @@ extension ImagePickerViewController {
         //divide rawText string at \n characters into separate [String] elements
         let paragraphArray: [String] = concatWords(rawText: paragraphRawText)
         
-        
-//        for i in 0..<paragraph.paragraph.count {
-//            
-//
-//            for j in 0..<paragraph.paragraph[i].word.count {
-//                print(paragraph.paragraph[i].word[j].text!, terminator:"")
-//                if paragraph.paragraph[i].word[j].addSpace == true {
-//                    print(" ", terminator:"")
-//                } else if paragraph.paragraph[i].word[j].newLine == true {
-//                    print("\n", terminator:"")
-//                } else if paragraph.paragraph[i].word[j].newParagraph == true {
-//                    print("\n\nNEW PARAGRAPH")
-//                }
-//            }
-//            
-//        }
         print(paragraphArray)
         return paragraphArray
     }
     
     func concatLetters(word: Word)-> String {
         var fullWord: String = ""
-//        var newLine: Bool = false
         
         for i in word.word {
             fullWord.append(i.text!)
@@ -536,12 +459,6 @@ extension ImagePickerViewController {
         
         paragraphArray = rawText.components(separatedBy: "\n").map{"\($0)"}
         
-//        //loop through all characters in string and split into elements at \n character
-//        for i in rawText.characters.indices {
-//            if rawText[i] == "\n" {
-//                
-//            }
-//        }
         return paragraphArray
     }
     

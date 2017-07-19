@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0696850A22EF5385F291E86B4B3EEE2C"
+               BlueprintIdentifier = "E0F5C3E195BE214C4269A6C0A040DF90"
                BuildableName = "Pods_VisionTextDetection.framework"
                BlueprintName = "Pods-VisionTextDetection"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0696850A22EF5385F291E86B4B3EEE2C"
+            BlueprintIdentifier = "E0F5C3E195BE214C4269A6C0A040DF90"
             BuildableName = "Pods_VisionTextDetection.framework"
             BlueprintName = "Pods-VisionTextDetection"
             ReferencedContainer = "container:Pods.xcodeproj">

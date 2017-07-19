@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>DSGradientProgressView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-VisionTextDetection.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0696850A22EF5385F291E86B4B3EEE2C</key>
+		<key>55CEEFAB885899758F8B1147878C5FBE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A9B716EA94AD652C76EDC7FC4D896976</key>
+		<key>E0F5C3E195BE214C4269A6C0A040DF90</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F13DA0F262786773717D90E9B6402B87</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DSGradientProgressView
 
 class ScanViewController: UIViewController {
 
@@ -22,10 +23,24 @@ class ScanViewController: UIViewController {
 
     @IBOutlet weak var receiptimageView: UIImageView!
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+//        scanLine.layer.borderWidth = 2
+//        scanLine.layer.borderColor = UIColor.blue.cgColor
+//        scanLine.frame.size = CGSize(width: self.view.frame.width, height: 0)
+      
+        
+//        UILabel.animate(withDuration: 2.0, animations: {
+//            self.scanLine.center = CGPoint(x: 0, y: 0)
+//            
+//        })
+
         
         //let viewSize = receiptimageView.frame.size
         let viewSize = self.view.frame.size
@@ -41,14 +56,6 @@ class ScanViewController: UIViewController {
         print(imageLocation)
         
         if allBlocks.count > 0 {
-            //draw original blocks
-//            for block in allBlocks {
-//                let button = calcButtonCoordinates(block: block)
-//                button.addTarget(self, action: #selector(ratingButtonTapped), for: .touchUpInside)
-//                button.layer.borderColor = UIColor.green.cgColor
-//                button.layer.borderWidth = 2
-//                view.addSubview(button)
-//            }
             
             let newBlock: [Block] = rescaleBlock(viewSize: viewSize, imageSize: receiptImage?.size, allBlocks: allBlocks, imageLocation: imageLocation)
             
@@ -65,12 +72,9 @@ class ScanViewController: UIViewController {
                 counter += 1
             }
         }
-        
-        
-        
-        
-
     }
+    
+    
     
     func blockTapped(sender: UIButton) {
         

@@ -7,6 +7,7 @@ target 'VisionTextDetection' do
 
   # Pods for VisionTextDetection
   pod 'SwiftyJSON'
+  pod 'DSGradientProgressView'
 
 
 end
