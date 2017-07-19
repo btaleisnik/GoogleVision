@@ -20,15 +20,28 @@ class ScanViewController: UIViewController {
     var foundDouble: Bool?
     var allItems: [Item] = []
     var nextPriceIndexToAdd: Int = 0
+    var scanningComplete: Bool?
 
     @IBOutlet weak var receiptimageView: UIImageView!
+    @IBOutlet weak var progressView: DSGradientProgressView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        progressView.barColor = UIColor.green
+        
+        if scanningComplete == false {
+            progressView.wait()
+        } else if scanningComplete == true {
+            progressView.signal()
+            progressView.isHidden = true
+        }
 
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
 
-        
+        //progressView.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
 //        scanLine.layer.borderWidth = 2

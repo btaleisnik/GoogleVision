@@ -143,6 +143,7 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     var allItems: [Item] = []
     
     var allBlocks: [Block] = []
+    var scanningComplete: Bool? = false
 
     
     @IBOutlet weak var imageView: UIImageView!
@@ -157,6 +158,7 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
 
             scanVC.allBlocks = self.allBlocks
             scanVC.receiptImage = self.imageView.image
+            scanVC.scanningComplete = self.scanningComplete
             
         }
     }
@@ -415,6 +417,8 @@ extension ImagePickerViewController {
                     }
                 }
             }
+            self.scanningComplete = true
+            self.performSegue(withIdentifier: "navToScan", sender: nil)
         })
         
     }
@@ -476,6 +480,7 @@ extension ImagePickerViewController {
         }
         
         dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "navToScan", sender: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

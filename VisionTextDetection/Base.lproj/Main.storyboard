@@ -73,7 +73,7 @@
                     <navigationItem key="navigationItem" title="Scan Image" id="ACB-Ok-C0j">
                         <barButtonItem key="rightBarButtonItem" title="Scan" id="KvC-Mo-XH4">
                             <connections>
-                                <segue destination="8Tw-m1-9O4" kind="show" identifier="navToScan" id="3yd-Er-HX1"/>
+                                <segue destination="8Tw-m1-9O4" kind="show" identifier="navToScan" animates="NO" id="3yd-Er-HX1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -103,16 +103,25 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="receipt2" translatesAutoresizingMaskIntoConstraints="NO" id="hQn-iU-omJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iah-uM-PUK" customClass="DSGradientProgressView" customModule="DSGradientProgressView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="548-Nx-Kzb"/>
-                            <constraint firstAttribute="trailing" secondItem="hQn-iU-omJ" secondAttribute="trailing" id="RXs-3d-b2u"/>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="top" secondItem="lOA-hM-cNr" secondAttribute="top" id="bHQ-zO-KyH"/>
-                            <constraint firstItem="hQn-iU-omJ" firstAttribute="leading" secondItem="lOA-hM-cNr" secondAttribute="leading" id="mCI-18-t4i"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="leading" secondItem="Iah-uM-PUK" secondAttribute="leading" id="5eY-4N-FXA"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="7rJ-Gp-B3w"/>
+                            <constraint firstItem="hQn-iU-omJ" firstAttribute="top" secondItem="lOA-hM-cNr" secondAttribute="top" id="GS3-dF-ZI6"/>
+                            <constraint firstItem="Iah-uM-PUK" firstAttribute="top" secondItem="hQn-iU-omJ" secondAttribute="top" id="S4z-9j-x4d"/>
+                            <constraint firstItem="Iah-uM-PUK" firstAttribute="trailing" secondItem="hQn-iU-omJ" secondAttribute="trailing" id="XhT-Je-6Lt"/>
+                            <constraint firstItem="D4F-Gs-TLE" firstAttribute="top" secondItem="Iah-uM-PUK" secondAttribute="bottom" constant="-6" id="i8L-d5-7nC"/>
+                            <constraint firstItem="Iah-uM-PUK" firstAttribute="leading" secondItem="lOA-hM-cNr" secondAttribute="leading" id="o5h-S8-DAU"/>
+                            <constraint firstAttribute="trailing" secondItem="Iah-uM-PUK" secondAttribute="trailing" id="pjL-1h-glV"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="progressView" destination="Iah-uM-PUK" id="gba-8L-dZc"/>
                         <outlet property="receiptimageView" destination="hQn-iU-omJ" id="rbd-7P-fnE"/>
                         <segue destination="f3U-FM-lmD" kind="show" identifier="navToItems" id="Gmg-s7-wSS"/>
                     </connections>
