@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB3C959005A1681E67ED39E4 /* Pods_VisionTextDetection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E3EF4CE7D04462A4E9392 /* Pods_VisionTextDetection.framework */; };
+		CA02E9BF1F1F94C000A30462 /* ItemsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA02E9BE1F1F94C000A30462 /* ItemsTableViewController.swift */; };
 		CA3B31CF1F178844005AAB8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3B31CE1F178844005AAB8B /* AppDelegate.swift */; };
 		CA3B31D11F178844005AAB8B /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3B31D01F178844005AAB8B /* ImagePickerViewController.swift */; };
 		CA3B31D41F178844005AAB8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA3B31D21F178844005AAB8B /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 		0A120133EF11E12B9692031F /* Pods-VisionTextDetection.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VisionTextDetection.release.xcconfig"; path = "Pods/Target Support Files/Pods-VisionTextDetection/Pods-VisionTextDetection.release.xcconfig"; sourceTree = "<group>"; };
 		2790301FC92D27045A7F59EF /* Pods-VisionTextDetection.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VisionTextDetection.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VisionTextDetection/Pods-VisionTextDetection.debug.xcconfig"; sourceTree = "<group>"; };
 		749E3EF4CE7D04462A4E9392 /* Pods_VisionTextDetection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VisionTextDetection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA02E9BE1F1F94C000A30462 /* ItemsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsTableViewController.swift; sourceTree = "<group>"; };
 		CA3B31CB1F178844005AAB8B /* VisionTextDetection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionTextDetection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA3B31CE1F178844005AAB8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA3B31D01F178844005AAB8B /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				CA3B31CE1F178844005AAB8B /* AppDelegate.swift */,
 				CA3B31D01F178844005AAB8B /* ImagePickerViewController.swift */,
 				CA3B31D21F178844005AAB8B /* Main.storyboard */,
+				CA02E9BE1F1F94C000A30462 /* ItemsTableViewController.swift */,
 				CABCFABD1F1CE80300F79389 /* ScanViewController.swift */,
 				CA3B31D51F178844005AAB8B /* Assets.xcassets */,
 				CA3B31D71F178844005AAB8B /* LaunchScreen.storyboard */,
@@ -217,6 +220,7 @@
 			files = (
 				CA3B31D11F178844005AAB8B /* ImagePickerViewController.swift in Sources */,
 				CA3B31CF1F178844005AAB8B /* AppDelegate.swift in Sources */,
+				CA02E9BF1F1F94C000A30462 /* ItemsTableViewController.swift in Sources */,
 				CABCFABE1F1CE80300F79389 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -86,6 +86,8 @@ class ScanViewController: UIViewController {
                 if let priceDouble = currentBlock.paragraphs[i][k].doubleValue {
                     prices.append(priceDouble)
                     foundDouble = true
+                    //sender.layer.borderColor = UIColor.cyan.cgColor
+                    sender.backgroundColor = UIColor(red: 84/255, green: 136/255, blue: 138/255, alpha: 0.5)
                 }
             }
         }
@@ -117,63 +119,71 @@ class ScanViewController: UIViewController {
         }
         
         //if prices existed in the block, we're done and our work was already done above
-        if foundDouble == true {
-            return
-        //otherwise, user likely selected an items block
-        } else {
+        if foundDouble == false {
+            
+            //sender.layer.borderColor = UIColor.cyan.cgColor
+            sender.backgroundColor = UIColor(red: 84/255, green: 136/255, blue: 138/255, alpha: 0.5)
             
             //for each item, assign it a price, add to items dictionary, and update priceAdded tracker
             for i in 0..<currentBlock.paragraphs.count {
                 for k in 0..<currentBlock.paragraphs[i].count {
-                    //if item is not free (discard/skip if it is), assign price to item
-                    if prices[nextPriceIndexToAdd] != 0.0 {
-                        allItems.append(Item(name: currentBlock.paragraphs[i][k], price: prices[nextPriceIndexToAdd]))
+                    
+                    //make sure prices index is in scope, if not, exit
+                    if nextPriceIndexToAdd < prices.count {
+                        //if item is not free (discard/skip if it is), assign price to item
+                        if prices[nextPriceIndexToAdd] != 0.0 {
+                            allItems.append(Item(name: currentBlock.paragraphs[i][k], price: prices[nextPriceIndexToAdd]))
+                        }
+                        nextPriceIndexToAdd += 1
                     }
-                    nextPriceIndexToAdd += 1
                 }
             }
         }
     
-        //add way to let user know everything seems right: sum(item.prices) == total, all prices have been assigned
+        //if all data seems complete (i.e. items.count = prices.count, sum(prices) = total, etc.)
+        if checkItemCompletion(prices: prices, total: total, allItems: allItems) == true {
+            
+            performSegue(withIdentifier: "navToItems", sender: nil)
+        }
+        
         
     }
     
-        
-        
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "navToItems" {
+            let itemsVC = segue.destination as! ItemsTableViewController
+            
+            itemsVC.allItems = self.allItems
+            
+           // navigationController?.pushViewController(itemsVC, animated: true)
+        }
+    }
     
-//        
-//        //find total (assume it's the max() double on receipt, then remove all occurences
-//        let total = prices.max()
-//        prices = prices.filter{$0 != total}
-//        
-//        //sum up all items and verify itemSum == Total
-//        var itemSum = prices.reduce(0,+)
-//        
-//        //attempt to remove subtotal; look for a number greater than 90% of total price - likely the  pre-tax subtotal
-//        var subtotal: Double?
-//        var tax: Double?
-//        if itemSum != total {
-//            for price in prices {
-//                if (price > (total!*0.9)) {
-//                    subtotal = price
-//                    tax = total! - subtotal!
-//                    prices = prices.filter{$0 != price}
-//                    itemSum = prices.reduce(0, +)
-//                }
-//            }
-//        }
-//        
-//        var pricesText: String = "Prices Found: "
-//        
-//        for price in prices {
-//            // if it's not the last item add a comma
-//            if prices[prices.count - 1] != price {
-//                pricesText += "\(price), "
-//            } else {
-//                pricesText += "\(price)"
-//            }
-//        }
-
+    func checkItemCompletion(prices: [Double], total: Double?, allItems: [Item]) -> Bool {
+        
+        //check item prices add up to total
+        var itemSum: Double = 0.0
+        for i in allItems {
+            itemSum += i.price!
+            
+            //check all items have a name and price
+            if i.name == nil || i.price == nil {
+                return false
+            }
+        }
+        
+        if itemSum > total! {
+            return false
+        }
+        
+        let pricesWithoutZero = prices.filter{$0 != 0.0}
+        //check there are same # of items as prices
+        if pricesWithoutZero.count != allItems.count {
+            return false
+        }
+        
+        return true
+    }
     
     func calcButtonCoordinates(block: Block)->UIButton {
         let x = block.v1?.x
