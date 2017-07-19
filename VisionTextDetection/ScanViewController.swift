@@ -46,12 +46,16 @@ class ScanViewController: UIViewController {
             let newBlock: [Block] = rescaleBlock(viewSize: viewSize, imageSize: receiptImage?.size, allBlocks: allBlocks, imageLocation: imageLocation)
             
             //draw re-scaled blocks
+            var counter: Int = 0
             for block in newBlock {
                 let button = calcButtonCoordinates(block: block)
-                button.addTarget(self, action: #selector(ratingButtonTapped), for: .touchUpInside)
+                button.tag = counter
+                button.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
                 button.layer.borderColor = UIColor.green.cgColor
                 button.layer.borderWidth = 2
                 view.addSubview(button)
+                
+                counter += 1
             }
         }
         
@@ -61,8 +65,12 @@ class ScanViewController: UIViewController {
 
     }
     
-    func ratingButtonTapped() {
-        print("Button pressed")
+    func blockTapped(sender: UIButton) {
+        for i in 0..<allBlocks[sender.tag].paragraphs.count {
+            print(allBlocks[sender.tag].paragraphs[i])
+        }
+        
+        //print("Button pressed")
     }
     
     func calcButtonCoordinates(block: Block)->UIButton {

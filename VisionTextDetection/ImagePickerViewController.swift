@@ -35,9 +35,9 @@ extension String {
 
 struct Symbol {
     var text: String?
-    var addSpace: Bool?
-    var newLine: Bool?
-    var newParagraph: Bool?
+    var addSpace: Bool
+    var newLine: Bool
+    var newParagraph: Bool
     
     init() {
         addSpace = false
@@ -77,19 +77,22 @@ struct Block {
     var v2: Coordinate?
     var v3: Coordinate?
     var v4: Coordinate?
+    var paragraphs: [[String]]
     
     init() {
         self.v1 = Coordinate(x: nil, y: nil)
         self.v2 = Coordinate(x: nil, y: nil)
         self.v3 = Coordinate(x: nil, y: nil)
         self.v4 = Coordinate(x: nil, y: nil)
+        self.paragraphs = [[]]
     }
     
-    init(v1: Coordinate?, v2: Coordinate?, v3: Coordinate?, v4: Coordinate?) {
+    init(v1: Coordinate?, v2: Coordinate?, v3: Coordinate?, v4: Coordinate?, paragraphs: [[String]]) {
         self.v1 = v1
         self.v2 = v2
         self.v3 = v3
         self.v4 = v4
+        self.paragraphs = paragraphs
     }
 }
 
@@ -206,100 +209,6 @@ extension ImagePickerViewController {
             if (errorObj.dictionaryValue != [:]) {
                 self.priceTextView.text = "Error code \(errorObj["code"]): \(errorObj["message"])"
             } else {
-                // Parse the response
-                var responses: JSON = json["responses"][0]["textAnnotations"][0]["description"]
-                
-//                var test: JSON = json["responses"][0]
-//                print(test)
-//                
-                
-                var rawReceiptData = responses.rawString()
-                //print(rawReceiptData)
-                //replace all , with . so $ amounts are in Double format
-                rawReceiptData = rawReceiptData?.replacingOccurrences(of: ",", with: ".")
-                
-                let receiptTextArray = (rawReceiptData?.components(separatedBy: .newlines))!
-                
-                //print("\nCURRENT RECEIPT TEXT")
-                //print(rawReceiptData!)
-                
-                
-//                var receiptReversed: [String] = []
-//                let reverseCount = receiptTextArray.count-1
-//                
-//                //reverse array order to start from bottom of text (total) then go up
-//                for line in 0..<receiptTextArray.count {
-//                    receiptReversed.append(receiptTextArray[reverseCount-line])
-//                    print(receiptTextArray[reverseCount-line])
-//                }
-                
-                var prices: [Double] = []
-                print(receiptTextArray)
-                
-                for i in receiptTextArray {
-                    if let priceDouble = i.doubleValue {
-                        //if free item, we don't care
-                        if priceDouble > 0 {
-                            //print(priceDouble)
-                            prices.append(priceDouble)
-                        }
-                    }
-                }
-                
-                //find total (assume it's the max() double on receipt, then remove all occurences
-                let total = prices.max()
-                prices = prices.filter{$0 != total}
-                
-                //sum up all items and verify itemSum == Total
-                var itemSum = prices.reduce(0,+)
-                
-                //attempt to remove subtotal; look for a number greater than 90% of total price - likely the  pre-tax subtotal
-                var subtotal: Double?
-                var tax: Double?
-                if itemSum != total {
-                    for price in prices {
-                        if (price > (total!*0.9)) {
-                            subtotal = price
-                            tax = total! - subtotal!
-                            prices = prices.filter{$0 != price}
-                            itemSum = prices.reduce(0, +)
-                        }
-                    }
-                }
-                
-                
-                
-                //print("Subtotal: \(subtotal ?? 0.0)")
-               // print("Tax: \(tax ?? 0.0))")
-                //print("Total: \(total!)")
-                //print("itemSum: \(itemSum)")
-                
-                var pricesText: String = "Prices Found: "
-                
-                for price in prices {
-                    // if it's not the last item add a comma
-                    if prices[prices.count - 1] != price {
-                        pricesText += "\(price), "
-                    } else {
-                        pricesText += "\(price)"
-                    }
-                }
-                
-                
-                self.priceTextView.text = pricesText
-                self.itemTextView.text = "Subtotal: \(String(format: "%.2f", (subtotal ?? 0.0))) \nTax: \(String(format: "%.2f", (tax ?? 0.0))) \nTotal: \(String(format: "%.2f", total!))"
-            
-                
-                
-                //NEW TO DO PLAN
-                //Wrap all lines in outline buttons
-                //Ask user to first select all items by tapping buttons over items
-                //Then ask to select all prices
-                //Then ask to press the total, tax, and tip (if included)
-                
-                
-                
-                
                 
                 //ATTEMPTING TO ISOLATE BLOCK COORDINATES
                 var blockResponses: JSON = json["responses"][0]["fullTextAnnotation"]["pages"][0]["blocks"]
@@ -313,7 +222,9 @@ extension ImagePickerViewController {
                 var coord2: Coordinate?
                 var coord3: Coordinate?
                 var coord4: Coordinate?
+                var allParagraphs: [[String]] = []
                 
+                //for each block in receipt
                 for i in 0..<blockResponses.count {
                     
                     var currentBlock = Block()
@@ -353,16 +264,12 @@ extension ImagePickerViewController {
                     }
                     
                     
-
-                    //If detectedBreak key exists in symbols->property:
-                    //add " " for SPACE
-                    //add \n for EQL_SURE_SPACE
-                    //add new paragraph for LINE_BREAK
-                    
                     //For each block in receipt
-                    for x in 0..<blockResponses.count {
-                        var paragraphJSON = blockResponses[x]["paragraphs"]
-                        
+                   // for x in 0..<blockResponses.count {
+                        var paragraphJSON = blockResponses[i]["paragraphs"]
+                    
+                        allParagraphs = []
+                    
                         //For each paragraph in current block
                         for j in 0..<paragraphJSON.count {
                             var wordsJSON = paragraphJSON[j]["words"]
@@ -404,18 +311,96 @@ extension ImagePickerViewController {
                                 currentParagraph.paragraph.append(currentWord)
                             }
                             
-                            //Add currentParagraph to current currentBlock
-                            self.paragraphToBlock(paragraph: currentParagraph)
+                            //Add currentParagraph to allParagraphs in block
+                            allParagraphs.append(self.paragraphToBlock(paragraph: currentParagraph))
+                            
                         }
                         
-                    }
+                   // }
                     
                     
                     
                     //Add currentBlock to allBlocks
-                    currentBlock = Block(v1: coord1, v2: coord2, v3: coord3, v4: coord4)
+                    currentBlock = Block(v1: coord1, v2: coord2, v3: coord3, v4: coord4, paragraphs: allParagraphs)
                     self.allBlocks.append(currentBlock)
-                    
+                }
+                
+                //TEXT DATA HAS NOW BEEN ASSOCIATED WITH EACH BLOCK SO WE CAN IDENTIFY WHEN USER SELECTS ITEMS
+                
+                //////////////////////////////////////////////////////////////////////////////////////////////
+                //////////////////// THIS SECTION READS DOUBLE VALUES TO IDENTIFY PRICES /////////////////////
+                /////////////////// WANT TO CHANGE TO INSTEAD LOOP THROUGH BLOCK USER SELECTS ///////////////
+                //////////////////////////////////////////////////////////////////////////////////////////////
+
+                // Parse the response
+                var responses: JSON = json["responses"][0]["textAnnotations"][0]["description"]
+                
+                var rawReceiptData = responses.rawString()
+                
+                //replace all , with . so $ amounts are in Double format
+                rawReceiptData = rawReceiptData?.replacingOccurrences(of: ",", with: ".")
+                
+                let receiptTextArray = (rawReceiptData?.components(separatedBy: .newlines))!
+                
+                var prices: [Double] = []
+                print(receiptTextArray)
+                
+                for i in receiptTextArray {
+                    if let priceDouble = i.doubleValue {
+                        //if free item, we don't care
+                        if priceDouble > 0 {
+                            //print(priceDouble)
+                            prices.append(priceDouble)
+                        }
+                    }
+                }
+                
+                //find total (assume it's the max() double on receipt, then remove all occurences
+                let total = prices.max()
+                prices = prices.filter{$0 != total}
+                
+                //sum up all items and verify itemSum == Total
+                var itemSum = prices.reduce(0,+)
+                
+                //attempt to remove subtotal; look for a number greater than 90% of total price - likely the  pre-tax subtotal
+                var subtotal: Double?
+                var tax: Double?
+                if itemSum != total {
+                    for price in prices {
+                        if (price > (total!*0.9)) {
+                            subtotal = price
+                            tax = total! - subtotal!
+                            prices = prices.filter{$0 != price}
+                            itemSum = prices.reduce(0, +)
+                        }
+                    }
+                }
+                
+                var pricesText: String = "Prices Found: "
+                
+                for price in prices {
+                    // if it's not the last item add a comma
+                    if prices[prices.count - 1] != price {
+                        pricesText += "\(price), "
+                    } else {
+                        pricesText += "\(price)"
+                    }
+                }
+                
+                
+                self.priceTextView.text = pricesText
+                self.itemTextView.text = "Subtotal: \(String(format: "%.2f", (subtotal ?? 0.0))) \nTax: \(String(format: "%.2f", (tax ?? 0.0))) \nTotal: \(String(format: "%.2f", total!))"
+                
+                //////////////////////////////////////////////////////////////////////////////////////////////
+                //////////////////// THIS SECTION READS DOUBLE VALUES TO IDENTIFY PRICES /////////////////////
+                /////////////////// WANT TO CHANGE TO INSTEAD LOOP THROUGH BLOCK USER SELECTS ///////////////
+                //////////////////////////////////////////////////////////////////////////////////////////////
+
+                //PRINTS ALL LINES IN EACH BLOCK
+                for block in self.allBlocks {
+                    for i in 0..<block.paragraphs.count {
+                        print(block.paragraphs[i])
+                    }
                 }
 
                 
@@ -483,21 +468,70 @@ extension ImagePickerViewController {
         
     }
     
-    func paragraphToBlock(paragraph: Paragraph) {
+    func paragraphToBlock(paragraph: Paragraph) -> [String] {
         
+        var paragraphRawText: String = ""
+        
+        //append each concatenated word to a string
         for i in 0..<paragraph.paragraph.count {
-            for j in 0..<paragraph.paragraph[i].word.count {
-                print(paragraph.paragraph[i].word[j].text!, terminator:"")
-                if paragraph.paragraph[i].word[j].addSpace == true {
-                    print(" ", terminator:"")
-                } else if paragraph.paragraph[i].word[j].newLine == true {
-                    print("\n", terminator:"")
-                } else if paragraph.paragraph[i].word[j].newParagraph == true {
-                    print("\n\nNEW PARAGRAPH")
-                }
-            }
+            
+            //concatenate all letters in each word
+            let currentWord = concatLetters(word: paragraph.paragraph[i])
+            paragraphRawText.append(currentWord)
             
         }
+        
+        //divide rawText string at \n characters into separate [String] elements
+        let paragraphArray: [String] = concatWords(rawText: paragraphRawText)
+        
+        
+//        for i in 0..<paragraph.paragraph.count {
+//            
+//
+//            for j in 0..<paragraph.paragraph[i].word.count {
+//                print(paragraph.paragraph[i].word[j].text!, terminator:"")
+//                if paragraph.paragraph[i].word[j].addSpace == true {
+//                    print(" ", terminator:"")
+//                } else if paragraph.paragraph[i].word[j].newLine == true {
+//                    print("\n", terminator:"")
+//                } else if paragraph.paragraph[i].word[j].newParagraph == true {
+//                    print("\n\nNEW PARAGRAPH")
+//                }
+//            }
+//            
+//        }
+        print(paragraphArray)
+        return paragraphArray
+    }
+    
+    func concatLetters(word: Word)-> String {
+        var fullWord: String = ""
+//        var newLine: Bool = false
+        
+        for i in word.word {
+            fullWord.append(i.text!)
+            if i.addSpace == true {
+                fullWord.append(" ")
+            } else if i.newLine == true {
+                fullWord.append("\n")
+            }
+        }
+        print(fullWord)
+        return fullWord
+    }
+    
+    func concatWords(rawText: String) -> [String] {
+        var paragraphArray: [String] = []
+        
+        paragraphArray = rawText.components(separatedBy: "\n").map{"\($0) "}
+        
+//        //loop through all characters in string and split into elements at \n character
+//        for i in rawText.characters.indices {
+//            if rawText[i] == "\n" {
+//                
+//            }
+//        }
+        return paragraphArray
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
