@@ -9,9 +9,16 @@
 import UIKit
 
 class ScanViewController: UIViewController {
+
     
     var allBlocks: [Block] = []
+    var prices: [Double] = []
+    var total: Double?
     var receiptImage: UIImage?
+    var totalIndex: Int?
+    var foundDouble: Bool?
+    var allItems: [Item] = []
+    var nextPriceIndexToAdd: Int = 0
 
     @IBOutlet weak var receiptimageView: UIImageView!
     
@@ -66,12 +73,107 @@ class ScanViewController: UIViewController {
     }
     
     func blockTapped(sender: UIButton) {
-        for i in 0..<allBlocks[sender.tag].paragraphs.count {
-            print(allBlocks[sender.tag].paragraphs[i])
+        
+        var currentBlock: Block = allBlocks[sender.tag]
+        foundDouble = false
+
+        
+        for i in 0..<currentBlock.paragraphs.count {
+            print(currentBlock.paragraphs[i])
+            
+            //for every line in paragraph, add price element if can be converted to double (i.e. a price)
+            for k in 0..<currentBlock.paragraphs[i].count {
+                if let priceDouble = currentBlock.paragraphs[i][k].doubleValue {
+                    prices.append(priceDouble)
+                    foundDouble = true
+                }
+            }
         }
         
-        //print("Button pressed")
+        //If prices have been selected, assume highest price is total
+        if prices.isEmpty == false {
+            
+            //find current highest number in prices
+            let currentTotal: Double = prices.max()!
+
+            //if no total has been set yet, make currentTotal = total, remove it from pirce, and keep track of index
+            if total == nil {
+                total = currentTotal
+                totalIndex = prices.index(of: prices.max()!)
+                prices = prices.filter{$0 != currentTotal}
+            }
+            
+            //if currentTotal is greater than total, insert total back into prices and replace with currentTotal
+            if currentTotal > total! {
+                //add back old total in correct index
+                prices.insert(total!, at: totalIndex!)
+                
+                //store index of new total and filter out
+                totalIndex = prices.index(of: currentTotal)
+                total = currentTotal
+                prices = prices.filter{$0 != currentTotal}
+            }
+
+        }
+        
+        //if prices existed in the block, we're done and our work was already done above
+        if foundDouble == true {
+            return
+        //otherwise, user likely selected an items block
+        } else {
+            
+            //for each item, assign it a price, add to items dictionary, and update priceAdded tracker
+            for i in 0..<currentBlock.paragraphs.count {
+                for k in 0..<currentBlock.paragraphs[i].count {
+                    //if item is not free (discard/skip if it is), assign price to item
+                    if prices[nextPriceIndexToAdd] != 0.0 {
+                        allItems.append(Item(name: currentBlock.paragraphs[i][k], price: prices[nextPriceIndexToAdd]))
+                    }
+                    nextPriceIndexToAdd += 1
+                }
+            }
+        }
+    
+        //add way to let user know everything seems right: sum(item.prices) == total, all prices have been assigned
+        
     }
+    
+        
+        
+    
+//        
+//        //find total (assume it's the max() double on receipt, then remove all occurences
+//        let total = prices.max()
+//        prices = prices.filter{$0 != total}
+//        
+//        //sum up all items and verify itemSum == Total
+//        var itemSum = prices.reduce(0,+)
+//        
+//        //attempt to remove subtotal; look for a number greater than 90% of total price - likely the  pre-tax subtotal
+//        var subtotal: Double?
+//        var tax: Double?
+//        if itemSum != total {
+//            for price in prices {
+//                if (price > (total!*0.9)) {
+//                    subtotal = price
+//                    tax = total! - subtotal!
+//                    prices = prices.filter{$0 != price}
+//                    itemSum = prices.reduce(0, +)
+//                }
+//            }
+//        }
+//        
+//        var pricesText: String = "Prices Found: "
+//        
+//        for price in prices {
+//            // if it's not the last item add a comma
+//            if prices[prices.count - 1] != price {
+//                pricesText += "\(price), "
+//            } else {
+//                pricesText += "\(price)"
+//            }
+//        }
+
     
     func calcButtonCoordinates(block: Block)->UIButton {
         let x = block.v1?.x

@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension String {
+    var doubleValue: Double? {
+        return Double(self)
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

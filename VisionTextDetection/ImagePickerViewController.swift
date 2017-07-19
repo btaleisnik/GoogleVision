@@ -17,16 +17,21 @@ import SwiftyJSON
 
 
 struct Item {
-    var quantity: Int? = 0
-    var name: String? = ""
-    var price: Double? = 0.0
-}
-
-extension String {
-    var doubleValue: Double? {
-        return Double(self)
+    var name: String?
+    var price: Double?
+    
+    init() {
+        self.name = ""
+        self.price = 0.0
+    }
+    
+    init(name: String?, price: Double?) {
+        self.name = name
+        self.price = price
     }
 }
+
+
 
 //If detectedBreak key exists in symbols->property:
 //add " " for SPACE
@@ -305,6 +310,12 @@ extension ImagePickerViewController {
                                     
                                     
                                     currentSymbol.text = symbolsJSON[m]["text"].description
+                                    
+                                    //if letter is , replace with .
+                                    //this handles instances when decimal in price is interpreted as , so attempt to convert to double will fail; if all , are . we circumvent this
+                                    if currentSymbol.text == "," {
+                                        currentSymbol.text = "."
+                                    }
                                     currentWord.word.append(currentSymbol)
                                 }
                                 
@@ -523,7 +534,7 @@ extension ImagePickerViewController {
     func concatWords(rawText: String) -> [String] {
         var paragraphArray: [String] = []
         
-        paragraphArray = rawText.components(separatedBy: "\n").map{"\($0) "}
+        paragraphArray = rawText.components(separatedBy: "\n").map{"\($0)"}
         
 //        //loop through all characters in string and split into elements at \n character
 //        for i in rawText.characters.indices {
