@@ -42,35 +42,65 @@ class ScanViewController: UIViewController {
         
 
         //progressView.isHidden = false
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        //self.navigationController?.setNavigationBarHidden(true, animated: false)
 
         //let viewSize = receiptimageView.frame.size
         let viewSize = self.view.frame.size
         let imageLocation = receiptimageView.frame.origin
+        print("\nVIEW SIZE:")
         print(viewSize)
+        
+        print("\nUIIMAGEVIEW SIZE:")
+        print(receiptimageView.frame.size)
         
         if let currentReciept = receiptImage {
             receiptimageView.image = currentReciept
         }
-        print("\n\n\nNEW CONTROLLER")
-        print(allBlocks)
-        
+        //print("\n\n\nNEW CONTROLLER")
+        //print(allBlocks)
+        print("\nIMAGE LOCATION")
         print(imageLocation)
         
+        //let blah = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
+        //blah.layer.borderColor = UIColor.blue.cgColor
+        //blah.layer.borderWidth = 2
+        //receiptimageView.addSubview(blah)
+        
+        //let meh = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
+        //meh.layer.borderColor = UIColor.red.cgColor
+        //meh.layer.borderWidth = 2
+        //view.addSubview(meh)
+        
         if allBlocks.count > 0 {
+            
+            //draw original blocks
+            var counter: Int = 0
+            for block in allBlocks {
+                let button = calcButtonCoordinates(block: block)
+                button.tag = counter
+                button.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
+                button.layer.borderColor = UIColor.red.cgColor
+                button.layer.borderWidth = 2
+                view.addSubview(button)
+                
+                counter += 1
+            }
             
             let newBlock: [Block] = rescaleBlock(viewSize: viewSize, imageSize: receiptImage?.size, allBlocks: allBlocks, imageLocation: imageLocation)
             
             //draw re-scaled blocks
-            var counter: Int = 0
+            counter = 0
             for block in newBlock {
                 let button = calcButtonCoordinates(block: block)
                 button.tag = counter
                 button.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
                 button.layer.borderColor = UIColor.green.cgColor
                 button.layer.borderWidth = 2
-                view.addSubview(button)
+                //view.addSubview(button)
+                receiptimageView.addSubview(button)
                 
+                
+                    
                 counter += 1
             }
         }
@@ -85,7 +115,7 @@ class ScanViewController: UIViewController {
 
         
         for i in 0..<currentBlock.paragraphs.count {
-            print(currentBlock.paragraphs[i])
+            //print(currentBlock.paragraphs[i])
             
             //for every line in paragraph, add price element if can be converted to double (i.e. a price)
             for k in 0..<currentBlock.paragraphs[i].count {
@@ -108,7 +138,8 @@ class ScanViewController: UIViewController {
             if total == nil {
                 total = currentTotal
                 totalIndex = prices.index(of: prices.max()!)
-                prices = prices.filter{$0 != currentTotal}
+                //prices = prices.filter{$0 != currentTotal}
+                prices.remove(at: totalIndex!)
             }
             
             //if currentTotal is greater than total, insert total back into prices and replace with currentTotal
@@ -119,7 +150,8 @@ class ScanViewController: UIViewController {
                 //store index of new total and filter out
                 totalIndex = prices.index(of: currentTotal)
                 total = currentTotal
-                prices = prices.filter{$0 != currentTotal}
+                //prices = prices.filter{$0 != currentTotal}
+                prices.remove(at: totalIndex!)
             }
 
         }
@@ -188,6 +220,11 @@ class ScanViewController: UIViewController {
             return false
         }
         
+        //if total exists but no prices, return false bc that means block with 1 item was chosen and removed bc current highest total, so not done clicking price blocks
+        if total != nil && prices.count == 0 {
+            return false
+        }
+        
         return true
     }
     
@@ -219,11 +256,25 @@ class ScanViewController: UIViewController {
         var i = 0
         for block in allBlocks {
             
+            //print old coordinates
+            print("OLD COORDINATES:")
+            print(block.v1?.x ?? CGFloat(0.0))
+            print(block.v2?.x ?? CGFloat(0.0))
+            print(block.v3?.x ?? CGFloat(0.0))
+            print(block.v4?.x ?? CGFloat(0.0))
+            
             newBlock[i].v1?.x = (CGFloat((block.v1?.x)!) * (xScaler)) //+ imageLocation.x
             newBlock[i].v2?.x = (CGFloat((block.v2?.x)!) * (xScaler)) //+ imageLocation.x
             newBlock[i].v3?.x = (CGFloat((block.v3?.x)!) * (xScaler)) //+ imageLocation.x
             newBlock[i].v4?.x = (CGFloat((block.v4?.x)!) * (xScaler)) //+ imageLocation.x
 
+            //print new coordinates
+            print("\nNEW COORDINATES:")
+            print(newBlock[i].v1?.x ?? CGFloat(0.0))
+            print(newBlock[i].v2?.x ?? CGFloat(0.0))
+            print(newBlock[i].v3?.x ?? CGFloat(0.0))
+            print(newBlock[i].v4?.x ?? CGFloat(0.0))
+            
             i += 1
             
         }

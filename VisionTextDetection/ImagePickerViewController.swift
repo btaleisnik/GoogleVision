@@ -151,28 +151,9 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     @IBOutlet weak var priceTextView: UITextView!
     @IBOutlet weak var itemTextView: UITextView!
 
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "navToScan" {
-            let scanVC = segue.destination as! ScanViewController
-
-            scanVC.allBlocks = self.allBlocks
-            scanVC.receiptImage = self.imageView.image
-            scanVC.scanningComplete = self.scanningComplete
-            
-        }
-    }
-
     var googleAPIKey = "AIzaSyD78xYTGtVFxFaHcHgthQNGTuF_vB6lHsw"
     var googleURL: URL {
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
-    }
-    
-    @IBAction func loadImageButtonTapped(_ sender: UIButton) {
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .photoLibrary
-        
-        present(imagePicker, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -187,6 +168,33 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "navToScan" {
+            let scanVC = segue.destination as! ScanViewController
+            
+            scanVC.allBlocks = self.allBlocks
+            scanVC.receiptImage = self.imageView.image
+            scanVC.scanningComplete = self.scanningComplete
+            
+        }
+    }
+    
+    @IBAction func loadImageButtonTapped(_ sender: UIButton) {
+        
+        //if camera is available, take photo, if not, use photo library
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .camera
+            imagePicker.cameraCaptureMode = .photo
+            imagePicker.modalPresentationStyle = .fullScreen
+            present(imagePicker,animated: true,completion: nil)
+        } else {
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .photoLibrary
+            present(imagePicker, animated: true, completion: nil)
+        }
     }
 }
 
@@ -223,6 +231,13 @@ extension ImagePickerViewController {
                 //print("\n\nNumber of blocks: \(blockResponses.count)\n")
                 
                 //print(blockResponses[0])
+                
+                //print dimensions of image
+                print("\nIMAGE DIMENSIONS")
+                print(json["responses"][0]["fullTextAnnotation"]["pages"][0]["width"])
+                print(json["responses"][0]["fullTextAnnotation"]["pages"][0]["height"])
+
+
 
                 var coord1: Coordinate?
                 var coord2: Coordinate?
@@ -411,7 +426,7 @@ extension ImagePickerViewController {
                 //PRINTS ALL LINES IN EACH BLOCK
                 for block in self.allBlocks {
                     for i in 0..<block.paragraphs.count {
-                        print(block.paragraphs[i])
+                        //print(block.paragraphs[i])
                     }
                 }
             }
@@ -439,7 +454,7 @@ extension ImagePickerViewController {
         //divide rawText string at \n characters into separate [String] elements
         let paragraphArray: [String] = concatWords(rawText: paragraphRawText)
         
-        print(paragraphArray)
+        //print(paragraphArray)
         return paragraphArray
     }
     
@@ -454,7 +469,7 @@ extension ImagePickerViewController {
                 fullWord.append("\n")
             }
         }
-        print(fullWord)
+        //print(fullWord)
         return fullWord
     }
     
@@ -465,6 +480,19 @@ extension ImagePickerViewController {
         
         return paragraphArray
     }
+    
+    //resize image before uploading to GoogleVision Scan
+    //func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+    //    let scale = newWidth / image.size.width
+    //    let newHeight = image.size.height * scale
+    //    UIGraphicsBeginImageContext(CGSize(width: newWidth, height: CGFloat(newHeight)))
+    //    image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+    //
+    //    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    //    UIGraphicsEndImageContext()
+    //
+    //    return newImage!
+   // }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
@@ -487,9 +515,9 @@ extension ImagePickerViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func resizeImage(_ imageSize: CGSize, image: UIImage) -> Data {
-        UIGraphicsBeginImageContext(imageSize)
-        image.draw(in: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
+    func resizeImage(image: UIImage) -> Data {
+        UIGraphicsBeginImageContext(CGSize(width: self.view.frame.width, height: self.view.frame.height))
+        image.draw(in: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         let resizedImage = UIImagePNGRepresentation(newImage!)
         UIGraphicsEndImageContext()
@@ -506,9 +534,9 @@ extension ImagePickerViewController {
         
         // Resize the image if it exceeds the 2MB API limit
         if (imagedata?.count > 2097152) {
-            let oldSize: CGSize = image.size
-            let newSize: CGSize = CGSize(width: 800, height: oldSize.height / oldSize.width * 800)
-            imagedata = resizeImage(newSize, image: image)
+            //let oldSize: CGSize = image.size
+            //let newSize: CGSize = CGSize(width: 800, height: oldSize.height / oldSize.width * 800)
+            imagedata = resizeImage(image: image)
         }
         
         return imagedata!.base64EncodedString(options: .endLineWithCarriageReturn)
