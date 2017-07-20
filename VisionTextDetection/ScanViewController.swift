@@ -23,6 +23,7 @@ class ScanViewController: UIViewController {
     var scanningComplete: Bool?
     var delegate: rescanDelegate?
 
+    @IBOutlet weak var rescanUIButton: UIBarButtonItem!
     @IBOutlet weak var receiptimageView: UIImageView!
     @IBOutlet weak var progressView: DSGradientProgressView!
     
@@ -31,9 +32,15 @@ class ScanViewController: UIViewController {
         
         if scanningComplete == false {
             progressView.wait()
+            self.rescanUIButton.title = ""
+            self.rescanUIButton.isEnabled = false
         } else if scanningComplete == true {
             progressView.signal()
             progressView.isHidden = true
+            self.rescanUIButton.title = "Re-Scan"
+            self.rescanUIButton.isEnabled = true
+            self.navigationItem.title = "Tap: Prices > Total > Items"
+
         }
 
     }
@@ -41,12 +48,8 @@ class ScanViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.rescanUIButton.title = ""
         
-
-        //progressView.isHidden = false
-        //self.navigationController?.setNavigationBarHidden(true, animated: false)
-
-        //let viewSize = receiptimageView.frame.size
         let viewSize = self.view.frame.size
         let imageLocation = receiptimageView.frame.origin
         print("\nVIEW SIZE:")
@@ -62,16 +65,6 @@ class ScanViewController: UIViewController {
         //print(allBlocks)
         print("\nIMAGE LOCATION")
         print(imageLocation)
-        
-        //let blah = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
-        //blah.layer.borderColor = UIColor.blue.cgColor
-        //blah.layer.borderWidth = 2
-        //receiptimageView.addSubview(blah)
-        
-        //let meh = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
-        //meh.layer.borderColor = UIColor.red.cgColor
-        //meh.layer.borderWidth = 2
-        //view.addSubview(meh)
         
         if allBlocks.count > 0 {
             

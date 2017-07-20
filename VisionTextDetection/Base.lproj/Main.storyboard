@@ -132,6 +132,7 @@
                     <connections>
                         <outlet property="progressView" destination="0Ga-iF-Yda" id="I2Z-6E-aeq"/>
                         <outlet property="receiptimageView" destination="hQn-iU-omJ" id="rbd-7P-fnE"/>
+                        <outlet property="rescanUIButton" destination="dtF-9r-aPQ" id="t0e-2e-ntt"/>
                         <segue destination="f3U-FM-lmD" kind="show" identifier="navToItems" id="Gmg-s7-wSS"/>
                     </connections>
                 </viewController>
