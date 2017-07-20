@@ -135,7 +135,7 @@ extension String {
 
 
 // MARK: ImagePickerViewController Class
-class ImagePickerViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ImagePickerViewController: UIViewController, rescanDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
     
@@ -144,12 +144,13 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     
     var allBlocks: [Block] = []
     var scanningComplete: Bool? = false
-
+    
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var priceTextView: UITextView!
     @IBOutlet weak var itemTextView: UITextView!
+    @IBOutlet weak var loadButton: UIButton!
 
     var googleAPIKey = "AIzaSyD78xYTGtVFxFaHcHgthQNGTuF_vB6lHsw"
     var googleURL: URL {
@@ -177,11 +178,18 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
             scanVC.allBlocks = self.allBlocks
             scanVC.receiptImage = self.imageView.image
             scanVC.scanningComplete = self.scanningComplete
+            scanVC.delegate = self
             
         }
     }
     
     @IBAction func loadImageButtonTapped(_ sender: UIButton) {
+        
+        //reset data in case user re-scans
+        currentItem = Item()
+        allItems = []
+        allBlocks = []
+        scanningComplete = false
         
         //if camera is available, take photo, if not, use photo library
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -195,6 +203,11 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
             imagePicker.sourceType = .photoLibrary
             present(imagePicker, animated: true, completion: nil)
         }
+    }
+    
+    //MARK: RescanDelegate Protocol Functions
+    func didClickRescan() {
+        loadImageButtonTapped(loadButton)
     }
 }
 

@@ -80,6 +80,7 @@
                     <connections>
                         <outlet property="imageView" destination="CJy-mX-kgx" id="aXG-c1-jP1"/>
                         <outlet property="itemTextView" destination="mOp-TU-dBI" id="REZ-Qh-vsm"/>
+                        <outlet property="loadButton" destination="CSr-KE-LLx" id="UrA-IZ-jE1"/>
                         <outlet property="priceTextView" destination="L7z-I6-GXy" id="aq3-XQ-N4p"/>
                         <outlet property="spinner" destination="lKl-ak-QUJ" id="BJk-eQ-bZ0"/>
                     </connections>
@@ -121,7 +122,13 @@
                             <constraint firstItem="hQn-iU-omJ" firstAttribute="bottom" secondItem="UhM-44-hua" secondAttribute="top" id="vUc-U4-Rf6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Scanning" id="3WV-9J-42q"/>
+                    <navigationItem key="navigationItem" title="Scanning" id="3WV-9J-42q">
+                        <barButtonItem key="leftBarButtonItem" title="Re-Scan" id="dtF-9r-aPQ">
+                            <connections>
+                                <action selector="rescanButton:" destination="8Tw-m1-9O4" id="hny-Qg-pwP"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="progressView" destination="0Ga-iF-Yda" id="I2Z-6E-aeq"/>
                         <outlet property="receiptimageView" destination="hQn-iU-omJ" id="rbd-7P-fnE"/>

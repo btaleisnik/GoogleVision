@@ -21,6 +21,7 @@ class ScanViewController: UIViewController {
     var allItems: [Item] = []
     var nextPriceIndexToAdd: Int = 0
     var scanningComplete: Bool?
+    var delegate: rescanDelegate?
 
     @IBOutlet weak var receiptimageView: UIImageView!
     @IBOutlet weak var progressView: DSGradientProgressView!
@@ -39,6 +40,7 @@ class ScanViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
 
         //progressView.isHidden = false
@@ -106,6 +108,9 @@ class ScanViewController: UIViewController {
         }
     }
     
+    @IBAction func rescanButton(_ sender: Any) {
+        self.delegate?.didClickRescan()
+    }
     
     
     func blockTapped(sender: UIButton) {
