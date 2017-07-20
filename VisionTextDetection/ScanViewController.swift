@@ -74,30 +74,30 @@ class ScanViewController: UIViewController {
                 let button = calcButtonCoordinates(block: block)
                 button.tag = counter
                 button.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
-                button.layer.borderColor = UIColor.red.cgColor
+                button.layer.borderColor = UIColor.green.cgColor
                 button.layer.borderWidth = 2
                 view.addSubview(button)
                 
                 counter += 1
             }
             
-            let newBlock: [Block] = rescaleBlock(viewSize: viewSize, imageSize: receiptImage?.size, allBlocks: allBlocks, imageLocation: imageLocation)
+            //let newBlock: [Block] = rescaleBlock(viewSize: viewSize, imageSize: receiptImage?.size, allBlocks: allBlocks, imageLocation: imageLocation)
             
             //draw re-scaled blocks
-            counter = 0
-            for block in newBlock {
-                let button = calcButtonCoordinates(block: block)
-                button.tag = counter
-                button.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
-                button.layer.borderColor = UIColor.green.cgColor
-                button.layer.borderWidth = 2
-                //view.addSubview(button)
-                receiptimageView.addSubview(button)
+            //counter = 0
+            //for block in newBlock {
+            //    let button = calcButtonCoordinates(block: block)
+            //    button.tag = counter
+            //    button.addTarget(self, action: #selector(blockTapped), for: .touchUpInside)
+            //    button.layer.borderColor = UIColor.green.cgColor
+            //    button.layer.borderWidth = 2
+            //    //view.addSubview(button)
+            //    receiptimageView.addSubview(button)
                 
                 
                     
-                counter += 1
-            }
+            //    counter += 1
+            //}
         }
     }
     
